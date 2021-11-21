@@ -15,11 +15,20 @@ const store = new Vuex.Store({
     inputSymbolsArr:[],
     isTrimmed: false,
     isDataReadyForXMLCreator:false,
-    showCreateXMLButton:false
+    showCreateXMLButton:false,
+    maxSymbolWidth:null,
+    maxSmallSymbolWidth:null,
+    jsonHasSmallSymbols:false
   },
   getters: {
     framesArrLength: state => {
       return state.framesArr.length;
+    },
+    xadvance:state => {
+      return Math.max(...state.arrSymbolsWidths)
+    },
+    xadvanceSmall:state => {
+      return Math.max(...state.arrSmallSymbolsWidth)
     }
   },
   mutations: {
@@ -33,7 +42,10 @@ const store = new Vuex.Store({
     setArrSmallSymbolsWidth: (state, arrSmallSymbolsWidth) => state.arrSmallSymbolsWidth = arrSmallSymbolsWidth,
     isTrimmed: (state, trimmed) => state.isTrimmed = trimmed,
     setDataReadyForXMLCreator: (state, isDataReady)  => state.isDataReadyForXMLCreator = isDataReady,
-    setShowCreateXMLButton: (state, show) => state.showCreateXMLButton = show
+    setShowCreateXMLButton: (state, show) => state.showCreateXMLButton = show,
+    updateMaxSymbolWidth: (state, value) => state.maxSymbolWidth = value,
+    updateMaxSmallSymbolWidth: (state, value) => state.maxSmallSymbolWidth = value,
+    setJSONHasSmallSymbols: (state, value) => state.jsonHasSmallSymbols = value
   },
   actions: {
   },
