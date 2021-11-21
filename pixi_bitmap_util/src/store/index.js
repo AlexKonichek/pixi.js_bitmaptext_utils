@@ -5,12 +5,35 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
-
+    arrSymbolsWidths:[],
+    arrSymbolsHeights:[],
+    arrSmallSymbolsWidth:[],
+    loadedJSON: null,
+    loadedPNG: null,
+    jsonData:null,
+    framesArr:[],
+    inputSymbolsArr:[],
+    isTrimmed: false,
+    isDataReadyForXMLCreator:false,
+    showCreateXMLButton:false
+  },
+  getters: {
+    framesArrLength: state => {
+      return state.framesArr.length;
+    }
   },
   mutations: {
-    increment: state => state.count++,
-    decrement: state => state.count--
+    setJSON: (state, json ) => state.loadedJSON = json,
+    setPNG:(state, image) => state.loadedPNG = image,
+    setJSONData:(state, data) => state.jsonData = data,
+    setFrames: (state, framesArr) => state.framesArr = framesArr,
+    setSymbolsArr:(state, symbolsArr) => state.inputSymbolsArr = symbolsArr,
+    setArrSymbolsWidths: (state, arrSymbolsWidths) => state.arrSymbolsWidths = arrSymbolsWidths,
+    setArrSymbolsHeights: (state, arrSymbolsHeights) => state.arrSymbolsHeights = arrSymbolsHeights,
+    setArrSmallSymbolsWidth: (state, arrSmallSymbolsWidth) => state.arrSmallSymbolsWidth = arrSmallSymbolsWidth,
+    isTrimmed: (state, trimmed) => state.isTrimmed = trimmed,
+    setDataReadyForXMLCreator: (state, isDataReady)  => state.isDataReadyForXMLCreator = isDataReady,
+    setShowCreateXMLButton: (state, show) => state.showCreateXMLButton = show
   },
   actions: {
   },
