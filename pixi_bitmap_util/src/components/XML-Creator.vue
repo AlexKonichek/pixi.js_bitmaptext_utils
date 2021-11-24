@@ -28,7 +28,6 @@ export default {
   components: {},
   data() {
     return {
-      xadvanceCurrent: null,
       comaOrDotExist:false,
       XMLFileName: "",
       scale: "",
@@ -47,11 +46,23 @@ export default {
       xoffsetForSymbolCorrectingXAdvance:0,
       yOffset:null,
       arrSymbolsParams:[],
-      showPreviewComponent:false
+      showPreviewComponent:false,
+
+      xadvanceCurrent:null,
+      yadvanceCurrent:null,
+      xOffsetCurrent:null,
+      yOffsetCurrent:null,
     }
   },
  
   watch: {
+    '$store.state.currentXadvance': function () {
+      this.JSON2XML()
+    },
+    '$store.state.currentSmallXadvance': function () {
+      this.JSON2XML()
+    },
+
     /* xoffsetForSymbolCorrectingXAdvance: function(){
       this.$emit("xOffsetForRendererChange",this.xoffsetForSymbolCorrectingXAdvance)
     },
@@ -63,7 +74,7 @@ export default {
     finalXAdvance: function () {
       this.xadvanceCurrent = Number(this.finalXAdvance)
       console.log("finalXAdvance change in xml creator", this.xadvanceCurrent)
-      this.JSON2XML()
+
     },
     finalSmallXAdvance: function () {
       console.log("finalSmallXAdvance change in xml creator", this.finalSmallXAdvance)
@@ -126,10 +137,7 @@ export default {
 
     JSON2XML() {
       this.arrSymbolsParams = []
-      let xadvanceCurrent;
-      let yadvanceCurrent;
-      let xOffsetCurrent;
-      let yOffsetCurrent;
+
       
       console.warn("JSON2XML",this.$store.state.arrSymbolsHeights[0]);
       //first part of XML file
@@ -150,26 +158,25 @@ export default {
             //define xadvance for dot,comma or similar small symbol
             //to do add arr of all possibly small symbols and checking if it have a current symbols
             if((this.$store.state.inputSymbolsArr[index] === "," || this.$store.state.inputSymbolsArr[index] === ".")) {
-                xadvanceCurrent = this.smallSymbolsXadvance
+                this.xadvanceCurrent = this.$store.state.currentSmallXadvance === null ? this.$store.getters.xadvanceSmall: this.$store.state.currentSmallXadvance
                 this.$store.commit("setJSONHasSmallSymbols", true)
-                xadvanceCurrent = 50
-                yadvanceCurrent = 50
+                this.yadvanceCurrent = undefined
                 }
 
               //define xadvance for plain symbols
               else {
-                xadvanceCurrent = 100
-                yadvanceCurrent = 100
+              this.xadvanceCurrent = this.$store.state.currentXadvance === null ? this.$store.getters.xadvance : this.$store.state.currentXadvance
+              this.yadvanceCurrent = undefined
               }
-            xOffsetCurrent = (Number(xadvanceCurrent)- symbolWidth) /2
-            yOffsetCurrent = (Number(yadvanceCurrent)- symbolHeight) /2
+        this.xOffsetCurrent = (Number(this.xadvanceCurrent)- symbolWidth) /2
+        this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
 
             /* if(this.symbolsArr[index] === this.symbolForCorrectingXOffset){
               this.xoffsetForSymbolCorrectingXAdvance = this.xOffset
             } */
             
 
-            let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${xOffsetCurrent}" yoffset="${yOffsetCurrent}" xadvance="${xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
+            let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${this.xOffsetCurrent}" yoffset="${this.yOffsetCurrent}" xadvance="${this.xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
               this.XMLText += row
 
               /* let symbolsParams = {
@@ -185,8 +192,8 @@ export default {
       //this.$emit("symbolParamsIsReady",this.arrSymbolsParams)
 
       //end part of XML file
-      this.XMLText += `    <char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${xadvanceCurrent * 0.25}" /><!--   -->\n`
-      this.XMLText += `    <char id="9" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${xadvanceCurrent * 0.7}" /><!--       -->\n`
+      this.XMLText += `    <char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceCurrent * 0.25}" /><!--   -->\n`
+      this.XMLText += `    <char id="9" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceCurrent * 0.7}" /><!--       -->\n`
       this.XMLText += `  </chars>
         <kernings count="0">
         </kernings>

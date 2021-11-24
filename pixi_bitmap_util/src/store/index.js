@@ -8,6 +8,7 @@ const store = new Vuex.Store({
     arrSymbolsWidths:[],
     arrSymbolsHeights:[],
     arrSmallSymbolsWidth:[],
+    arrSmallSymbolsHeights:[],
     loadedJSON: null,
     loadedPNG: null,
     jsonData:null,
@@ -16,8 +17,8 @@ const store = new Vuex.Store({
     isTrimmed: false,
     isDataReadyForXMLCreator:false,
     showCreateXMLButton:false,
-    maxSymbolWidth:null,
-    maxSmallSymbolWidth:null,
+    currentXadvance:null,
+    currentSmallXadvance:null,
     jsonHasSmallSymbols:false
   },
   getters: {
@@ -29,7 +30,14 @@ const store = new Vuex.Store({
     },
     xadvanceSmall:state => {
       return Math.max(...state.arrSmallSymbolsWidth)
+    },
+    yadvanceSmall:state => {
+      return Math.max(...state.arrSmallSymbolsWidth)
+    },
+    yadvance:state => {
+      return Math.max(...state.arrSymbolsHeights)
     }
+
   },
   mutations: {
     setJSON: (state, json ) => state.loadedJSON = json,
@@ -40,11 +48,12 @@ const store = new Vuex.Store({
     setArrSymbolsWidths: (state, arrSymbolsWidths) => state.arrSymbolsWidths = arrSymbolsWidths,
     setArrSymbolsHeights: (state, arrSymbolsHeights) => state.arrSymbolsHeights = arrSymbolsHeights,
     setArrSmallSymbolsWidth: (state, arrSmallSymbolsWidth) => state.arrSmallSymbolsWidth = arrSmallSymbolsWidth,
+    setArrSmallSymbolsHeights: (state, arrSmallSymbolsHeights) => state.arrSmallSymbolsHeights = arrSmallSymbolsHeights,
     isTrimmed: (state, trimmed) => state.isTrimmed = trimmed,
     setDataReadyForXMLCreator: (state, isDataReady)  => state.isDataReadyForXMLCreator = isDataReady,
     setShowCreateXMLButton: (state, show) => state.showCreateXMLButton = show,
-    updateMaxSymbolWidth: (state, value) => state.maxSymbolWidth = value,
-    updateMaxSmallSymbolWidth: (state, value) => state.maxSmallSymbolWidth = value,
+    updateCurrentXadvance: (state, value) => state.currentXadvance = value,
+    updateCurrentSmallXadvance: (state, value) => state.currentSmallXadvance = value,
     setJSONHasSmallSymbols: (state, value) => state.jsonHasSmallSymbols = value
   },
   actions: {

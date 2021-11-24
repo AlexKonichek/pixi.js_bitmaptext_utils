@@ -52,7 +52,7 @@
                   type="number"
               >
             </div> 
-            <div v-if="this.$store.state.setJSONHasSmallSymbols">
+            <div v-if="this.$store.state.jsonHasSmallSymbols">
               <label class="text-white h4" for="XAdvanceSmall">xadvance for "." "," and "×"</label>
               <div class="input-group input-group-lg mb-2">
                 <input
@@ -240,28 +240,28 @@ export default {
 
   },
   computed: {
-    xadvance() {
+    initialXadvance() {
       return this.$store.getters.xadvance
     },
 
-   xadvanceSmall() {
+    initialXadvanceSmall() {
       return this.$store.getters.xadvanceSmall
     },
 
     maxSmallSymbolWidthModel: {
       set(value) {
-        this.$store.commit('updateMaxSmallSymbolWidth', value)
+        this.$store.commit('updateCurrentSmallXadvance', value)
       },
       get() {
-        return this.maxSmallSymbolWidth !== undefined ? this.maxSmallSymbolWidth : this.xadvanceSmall
+        return this.$store.state.currentSmallXadvance !== null ? this.$store.state.currentSmallXadvance : this.initialXadvanceSmall
       }
     },
     maxSymbolWidthModel: {
       set(value) {
-        this.$store.commit('updateMaxSymbolWidth', value)
+        this.$store.commit('updateCurrentXadvance', value)
       },
       get() {
-        return this.$store.state.maxSymbolWidth !== undefined ? this.maxSymbolWidth : this.xadvance;
+        return this.$store.state.currentXadvance !== null ? this.$store.state.currentXadvance : this.initialXadvance
       }
     },
     maxSymbolHeightModel: {
@@ -349,6 +349,7 @@ export default {
       let arrSmallSymbolsWidth = [];
       let arrSymbolsWidths = [];
       let arrSymbolsHeights = [];
+      let arrSmallSymbolsHeights = [];
       let inputSymbolsArr = this.$store.state.inputSymbolsArr
 
       //if(!this.symbolsArr.includes(this.symbolForCorrectingXOffset)) {
@@ -359,12 +360,14 @@ export default {
            arrSymbolsHeights.push(frame.frame.h);
             if (inputSymbolsArr[index]=== ",") {
               arrSmallSymbolsWidth.push(frame.frame.w)
-                      this.jsonHasSmallSymbols = true
+              arrSmallSymbolsHeights.push(frame.frame.h)
+              this.jsonHasSmallSymbols = true
             }
             if (inputSymbolsArr[index]=== ".") {
               arrSmallSymbolsWidth.push(frame.frame.w)
-                      this.jsonHasSmallSymbols = true
-                      this.dotIndex = index
+              arrSmallSymbolsHeights.push(frame.frame.h)
+              this.jsonHasSmallSymbols = true
+              this.dotIndex = index
             }
             if(inputSymbolsArr[index] === this.symbolForCorrectingXOffset) {
                this.symbolParamsForCorrectingXOffset.width = frame.frame.w
@@ -377,6 +380,8 @@ export default {
       this.$store.commit("setArrSymbolsHeights",arrSymbolsHeights);
       this.$store.commit("setArrSymbolsWidths",arrSymbolsWidths);
       this.$store.commit("setArrSmallSymbolsWidth",arrSmallSymbolsWidth);
+      this.$store.commit("setArrSmallSymbolsHeights",arrSmallSymbolsHeights);
+
 
       this.isAllReady()
     },
