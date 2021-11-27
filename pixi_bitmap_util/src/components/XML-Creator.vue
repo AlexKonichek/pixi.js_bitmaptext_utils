@@ -1,15 +1,7 @@
 <template>
   <div>
     <div class="row m-3">
-      <div class="col-sm-6">
-        <!-- <button  v-if="showPreviewButton" class="btn btn-success btn-lg m-3"  v-on:click="showPreview">Show preview</button> -->
-        <!-- <Preview v-if="showPreviewComponent"
-            :arrSymbolsParams="arrSymbolsParams"
-            :textures="textures"
-            :symbolsMap="symbolsMap"
-        /> -->
-      </div>
-      <div  class="col-sm-6">
+      <div>
         <div class="form-group">
           <label class="h4 text-dark" for="XML">XML</label>
           <textarea class="form-control" id="XML" v-model="XMLText" rows="28" cols="50"></textarea>
@@ -91,6 +83,7 @@ export default {
       
     }
   },
+
   computed: {},
   methods: {
      prepareDataForXML() {
@@ -199,6 +192,9 @@ export default {
         </kernings>
         </font>`
     } 
+  },
+  mounted() {
+     this.prepareDataForXML()
   }
 }
 

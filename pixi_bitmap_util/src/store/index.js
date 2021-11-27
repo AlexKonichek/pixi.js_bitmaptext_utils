@@ -17,6 +17,7 @@ const store = new Vuex.Store({
     isTrimmed: false,
     isDataReadyForXMLCreator:false,
     showCreateXMLButton:false,
+    showInputError:false,
     currentXadvance:null,
     currentSmallXadvance:null,
     jsonHasSmallSymbols:false
@@ -54,7 +55,8 @@ const store = new Vuex.Store({
     setShowCreateXMLButton: (state, show) => state.showCreateXMLButton = show,
     updateCurrentXadvance: (state, value) => state.currentXadvance = value,
     updateCurrentSmallXadvance: (state, value) => state.currentSmallXadvance = value,
-    setJSONHasSmallSymbols: (state, value) => state.jsonHasSmallSymbols = value
+    setJSONHasSmallSymbols: (state, value) => state.jsonHasSmallSymbols = value,
+    setShowInputError: (state, value) => state.showInputError = value
   },
   actions: {
   },

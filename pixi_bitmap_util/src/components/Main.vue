@@ -3,81 +3,9 @@
     <div class="w-100 0">
       <div class="row">
         <div class="col-sm-3 mr-2">
-          <div  class="m-3">
-            <div>
-              <label class="text-white h4 mt-2"  for="symbols">Required symbols</label>
-              <div class="input-group input-group-lg mb-2">
-                <input
-                    type="text"
-                    id="symbols"
-                    
-                    class="form-control mr-3"
-                    v-model="inputSymbols"
-                    required
-                    placeholder="paste your symbols"
-                >
-              </div>
-            </div>
-            <div v-if="showInputError" class="alert alert-danger" role="alert">
-             <p> <b>Not enough symbols for parsing!</b></p>
-              <p>Should be {{this.framesArr.length}}</p>
-
-            </div>
-           <div v-if="showForm">
-             <label  class="label text-white h4" for="Select">Choose symbols set</label>
-             <select class="form-control form-control-lg mb-2" id="Select" v-model="inputSymbols" v-on:change="chooseSymbolsHandler" >
-               <option  :value="this.selectOption1">{{ this.selectOption1 }}</option>
-               <option>{{ this.selectOption2 }}</option>
-             </select>
-           </div>
-<!--            <label class="text-white h4" for="font-family">Font family</label>-->
-<!--            <div class="input-group input-group-lg m-3">-->
-<!--              <input-->
-<!--                  type="text"-->
-<!--                  id="font-family"-->
-<!--                  ref="inputSymbols"-->
-<!--                  class="form-control mr-3"-->
-<!--                  v-model="font"-->
-<!--                  required-->
-<!--              >-->
-<!--            </div>-->
-             <label class="text-white h4" for="XAdvance">general xadvance</label>
-            <div class="input-group input-group-lg mb-2">
-              <input
-                  id="XAdvance"
-                  class="form-control mr-3"
-                  ref="XAdvance"
-                  v-model="maxSymbolWidthModel"
-                  step="1"
-                  type="number"
-              >
-            </div> 
-            <div v-if="this.$store.state.jsonHasSmallSymbols">
-              <label class="text-white h4" for="XAdvanceSmall">xadvance for "." "," and "×"</label>
-              <div class="input-group input-group-lg mb-2">
-                <input
-                    id="XAdvanceSmall"
-                    class="form-control mr-3"
-                    ref="XAdvance"
-                    v-model="maxSmallSymbolWidthModel"
-                    step="1"
-                    type="number"
-                >
-              </div>
-            </div>
-             <p>
-    
-  </p>
-            <!-- <Canvas
-               
-            /> -->
-
-            <button ref='refresh' class="btn btn-light m-3"  v-on:click="refreshPage">Clear</button>
-
-          </div>
+          <SidePanel v-if="showSidePanel"/>
         </div>
         <div class="col-sm-9 bg-light ml-3">
-
           <OpenFile v-if="showOpenFile"
                     @json="loadedJSON = $event"
                     @image="loadedPNG = $event"
@@ -92,16 +20,14 @@
               </li>
             </ul>
           </div>
+          <XML_Creator v-if="showXMLCreator"/>
 
-        <!--  <div id="previewImage">
-            <img v-if="showImagePreview" :src="imgUrl" width="500"  />
-          </div>-->
-          <XML_Creator/>
-          <button v-if="showCreateXMLButton" class="btn btn-secondary m-4"  v-on:click="CreateXML">Create XML</button>
+           <!--  <div id="previewImage">
+              <img v-if="showImagePreview" :src="imgUrl" width="500"  />
+           </div>-->
           
+          <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-secondary m-4"  v-on:click="CreateXML">Create XML</button>
           
-
-
         </div>
       </div>
     </div>
@@ -112,9 +38,10 @@
 import OpenFile from "./OpenFile";
 import Canvas from "./Canvas.vue";
 import XML_Creator from "./XML-Creator";
+import SidePanel from "./SidePanel"
 
 export default {
-  components: {OpenFile, XML_Creator },
+  components: {OpenFile, XML_Creator, SidePanel },
   data() {
     return {
       arrSmallSumbolIndexesForRenderer:[],
@@ -146,9 +73,6 @@ export default {
       currentXAdvance: 0,
       dotXAdvance: 0,
       comaXAdvance: 0,
-      selectOption1: ',.×0123456789',
-      selectOption2: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-      showForm:true,
       showModal:false,
       showPreviewButton:false,
       showCreateXMLButton:false,
@@ -156,7 +80,7 @@ export default {
       showImagePreview:false,
       showOpenFile:true,
       showSidePanel:false,
-      showInputError: false,
+      
       showRenderButton: false,
       showBorderCheckbox: false,
       showLetterSpacingModeCheckbox: false,
@@ -181,7 +105,6 @@ export default {
       maxSmallSymbolWidth: undefined,
       maxWidthReady: false,
       framesArr:[],
-      
       JSONFile: {},
 
       XMLText: '',
@@ -214,14 +137,7 @@ export default {
       this.showImagePreview = true
       this.getSymbolsOrder()
     },
-    inputSymbols: function () {
-      this.symbolsArr = []
-      let symbolsArr = this.inputSymbols.split("");
-      this.$store.commit("setSymbolsArr", symbolsArr)
-      console.warn("inputSymbols is changed", this.symbolsArr)
-      this.initialParse()
-      this.validateSymbolsForm()
-    },
+    
 
     maxSymbolWidth: function () {
       this.finalXAdvance = Number(this.maxSymbolWidth)
@@ -240,30 +156,10 @@ export default {
 
   },
   computed: {
-    initialXadvance() {
-      return this.$store.getters.xadvance
+    showXMLCreator() {
+      return this.$store.state.isDataReadyForXMLCreator
     },
-
-    initialXadvanceSmall() {
-      return this.$store.getters.xadvanceSmall
-    },
-
-    maxSmallSymbolWidthModel: {
-      set(value) {
-        this.$store.commit('updateCurrentSmallXadvance', value)
-      },
-      get() {
-        return this.$store.state.currentSmallXadvance !== null ? this.$store.state.currentSmallXadvance : this.initialXadvanceSmall
-      }
-    },
-    maxSymbolWidthModel: {
-      set(value) {
-        this.$store.commit('updateCurrentXadvance', value)
-      },
-      get() {
-        return this.$store.state.currentXadvance !== null ? this.$store.state.currentXadvance : this.initialXadvance
-      }
-    },
+    
     maxSymbolHeightModel: {
       set(value) {
         this.maxSymbolHeight = value;
@@ -275,23 +171,6 @@ export default {
 
   },
   methods: {
-     increment () {
-      store.commit('increment')
-    },
-    decrement () {
-    	store.commit('decrement')
-    },
-     initialParse() {
-         let data = this.$store.state.jsonData
-         let frames = Object.values(data)[0]
-         let framesArr = Object.values(frames)
-         this.$store.commit('setFrames', framesArr);
-         
-        let trimmed = framesArr[0].trimmed
-        this.$store.commit('isTrimmed', trimmed);
-
-       
-     },
      getSymbolsOrder(){
          let data = JSON.parse(this.$store.state.loadedJSON)
          this.$store.commit("setJSONData", data)
@@ -336,75 +215,19 @@ export default {
       this.$store.commit("setDataReadyForXMLCreator", true)
       this.showRenderer = true
       this.showCreateXMLButton = false
+      this.$store.commit("setShowCreateXMLButton", false)
       this.showImagePreview = false
-      this.showForm =false
       this.showFrameNamesOrderMessage = false
      /*  if(this.arrSmallSymbolsWidth.length===0){
         this.showXadvanceForSmallSymbols = false
       } */
       
     },
-    parseJSON() {
-      console.warn("preparseJSON");
-      let arrSmallSymbolsWidth = [];
-      let arrSymbolsWidths = [];
-      let arrSymbolsHeights = [];
-      let arrSmallSymbolsHeights = [];
-      let inputSymbolsArr = this.$store.state.inputSymbolsArr
-
-      //if(!this.symbolsArr.includes(this.symbolForCorrectingXOffset)) {
-       // this.symbolForCorrectingXOffset = "0"}
-      
-        this.$store.state.framesArr.forEach((frame, index) => {
-           arrSymbolsWidths.push(frame.frame.w);
-           arrSymbolsHeights.push(frame.frame.h);
-            if (inputSymbolsArr[index]=== ",") {
-              arrSmallSymbolsWidth.push(frame.frame.w)
-              arrSmallSymbolsHeights.push(frame.frame.h)
-              this.jsonHasSmallSymbols = true
-            }
-            if (inputSymbolsArr[index]=== ".") {
-              arrSmallSymbolsWidth.push(frame.frame.w)
-              arrSmallSymbolsHeights.push(frame.frame.h)
-              this.jsonHasSmallSymbols = true
-              this.dotIndex = index
-            }
-            if(inputSymbolsArr[index] === this.symbolForCorrectingXOffset) {
-               this.symbolParamsForCorrectingXOffset.width = frame.frame.w
-               this.symbolParamsForCorrectingXOffset.x = frame.frame.x
-               this.symbolParamsForCorrectingXOffset.y = frame.frame.y
-            }
-            
-      })
-      
-      this.$store.commit("setArrSymbolsHeights",arrSymbolsHeights);
-      this.$store.commit("setArrSymbolsWidths",arrSymbolsWidths);
-      this.$store.commit("setArrSmallSymbolsWidth",arrSmallSymbolsWidth);
-      this.$store.commit("setArrSmallSymbolsHeights",arrSmallSymbolsHeights);
-
-
-      this.isAllReady()
-    },
-
-    
-    chooseSymbolsHandler(e) {
-      console.log(e)
-    },
-    validateSymbolsForm() {
-      let symbolsArr = this.$store.state.inputSymbolsArr
-      let framesArrLength = this.$store.getters.framesArrLength
-          if(framesArrLength === symbolsArr.length) {
-              this.showInputError = false
-              this.parseJSON()
-          }else {
-            this.showInputError = true
-            this.showCreateXMLButton = false
-          }
-    },
+  
      isAllReady() {
       console.warn("isAllReady")
       this.showCreateXMLButton = true
-      this.$store.commit("setShowCreateXMLButton",true )
+      
       //if(this.maxSymbolWidth===undefined) { this.finalXAdvance = this.xadvance } 
      // else { this.finalXAdvance = this.maxSymbolWidth }
      // if(this.maxSmallSymbolWidth===undefined) { this.finalSmallXAdvance = this.xadvanceSmall } 
@@ -417,7 +240,7 @@ export default {
     //      throw new Error("data is not ready")}
 
     },
-    refreshPage(){location.reload()}
+    
   
   }
 }

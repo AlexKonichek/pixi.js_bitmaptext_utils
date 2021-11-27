@@ -1,19 +1,18 @@
 <template>
   <div id="app">
     <Main/>
-    <Canvas/>
   </div>
 </template>
 
 <script>
 import Main from './components/Main.vue'
-import Canvas from './components/Canvas.vue'
+//import Canvas from './components/Canvas.vue'
 
 export default {
   name: 'App',
   components: {
     Main,
-    Canvas
+    //Canvas
   },
   
 }
