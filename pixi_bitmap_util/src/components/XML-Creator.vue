@@ -84,7 +84,14 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    xadvanceForSpaceSymbol() {
+      return Math.floor(this.xadvanceCurrent * 0.25)
+    },
+    xadvanceForTabSymbol() {
+      return Math.floor(this.xadvanceCurrent * 0.7)
+    }
+  },
   methods: {
      prepareDataForXML() {
       console.warn("XML-creator:prepareDataForXML")
@@ -162,7 +169,8 @@ export default {
               this.yadvanceCurrent = undefined
               }
         this.xOffsetCurrent = (Number(this.xadvanceCurrent)- symbolWidth) /2
-        this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
+        //this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
+        this.yOffsetCurrent = 0
 
             /* if(this.symbolsArr[index] === this.symbolForCorrectingXOffset){
               this.xoffsetForSymbolCorrectingXAdvance = this.xOffset
@@ -185,8 +193,8 @@ export default {
       //this.$emit("symbolParamsIsReady",this.arrSymbolsParams)
 
       //end part of XML file
-      this.XMLText += `    <char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceCurrent * 0.25}" /><!--   -->\n`
-      this.XMLText += `    <char id="9" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceCurrent * 0.7}" /><!--       -->\n`
+      this.XMLText += `    <char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceForSpaceSymbol}" /><!--   -->\n`
+      this.XMLText += `    <char id="9" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceForTabSymbol}" /><!--       -->\n`
       this.XMLText += `  </chars>
         <kernings count="0">
         </kernings>
