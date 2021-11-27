@@ -71,6 +71,9 @@
             </div>
 
     </div>
+    <div id="CanvasButton" v-if="this.$store.state.isDataReadyForXMLCreator">
+        <button class="btn btn-success m-3"  v-on:click="showCanvas">Show Demo</button>
+    </div>
     <div id="clearButton">
         <button ref='refresh' class="btn btn-light m-3"  v-on:click="refreshPage">Clear</button>
     </div>
@@ -154,9 +157,11 @@ export default {
       let arrSymbolsHeights = [];
       let arrSmallSymbolsHeights = [];
       let inputSymbolsArr = this.$store.state.inputSymbolsArr
+      let symbolParamsForCorrectingXOffset = { symbol:"S", width:0, x:0, y:0 }
 
-      //if(!this.symbolsArr.includes(this.symbolForCorrectingXOffset)) {
-       // this.symbolForCorrectingXOffset = "0"}
+      if(!inputSymbolsArr.includes(this.symbolForCorrectingXOffset)) {
+        this.$store.commit("setSymbolForCorrectingXOffset",  "0")
+        }
       
         this.$store.state.framesArr.forEach((frame, index) => {
            arrSymbolsWidths.push(frame.frame.w);
@@ -172,10 +177,11 @@ export default {
               this.jsonHasSmallSymbols = true
               this.dotIndex = index
             }
-            if(inputSymbolsArr[index] === this.symbolForCorrectingXOffset) {
-               this.symbolParamsForCorrectingXOffset.width = frame.frame.w
-               this.symbolParamsForCorrectingXOffset.x = frame.frame.x
-               this.symbolParamsForCorrectingXOffset.y = frame.frame.y
+            if(inputSymbolsArr[index] === this.$store.state.symbolForCorrectingXOffset) {
+               symbolParamsForCorrectingXOffset.width = frame.frame.w
+               symbolParamsForCorrectingXOffset.x = frame.frame.x
+               symbolParamsForCorrectingXOffset.y = frame.frame.y
+               this.$store.commit("setSymbolParamsForCorrectingXOffset", symbolParamsForCorrectingXOffset)
             }
             
       })
@@ -190,6 +196,10 @@ export default {
     },
     chooseSymbolsHandler(e) {
       console.log(e)
+    },
+    showCanvas() {
+        this.$store.commit("setShowCanvas", true )
+
     },
     refreshPage(){location.reload()}
   }

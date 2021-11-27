@@ -9,6 +9,7 @@ const store = new Vuex.Store({
     arrSymbolsHeights:[],
     arrSmallSymbolsWidth:[],
     arrSmallSymbolsHeights:[],
+    arrSymbolsParams:[],
     loadedJSON: null,
     loadedPNG: null,
     jsonData:null,
@@ -18,9 +19,21 @@ const store = new Vuex.Store({
     isDataReadyForXMLCreator:false,
     showCreateXMLButton:false,
     showInputError:false,
+    showCanvas:false,
+    textures:[],
     currentXadvance:null,
     currentSmallXadvance:null,
-    jsonHasSmallSymbols:false
+    jsonHasSmallSymbols:false,
+    symbolForCorrectingXOffset:"S",
+    digitsSymbolForCorrectingXOffset: "0",
+    symbolForCorrectingXOffsetSmall:",",
+
+    symbolParamsForCorrectingXOffset:{
+      symbol:"S",
+      width:0,
+      x:0,
+      y:0
+    },
   },
   getters: {
     framesArrLength: state => {
@@ -37,6 +50,15 @@ const store = new Vuex.Store({
     },
     yadvance:state => {
       return Math.max(...state.arrSymbolsHeights)
+    },
+    secondSymbolXoffsetForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffset)
+    },
+    secondSmallSymbolXoffsetForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffsetSmall)
+    },
+    comaParams:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === ",")
     }
 
   },
@@ -56,7 +78,13 @@ const store = new Vuex.Store({
     updateCurrentXadvance: (state, value) => state.currentXadvance = value,
     updateCurrentSmallXadvance: (state, value) => state.currentSmallXadvance = value,
     setJSONHasSmallSymbols: (state, value) => state.jsonHasSmallSymbols = value,
-    setShowInputError: (state, value) => state.showInputError = value
+    setShowInputError: (state, value) => state.showInputError = value,
+    setTextures: (state, value) => state.textures = value,
+    setSymbolParamsForCorrectingXOffset: (state, value) => state.symbolParamsForCorrectingXOffset = value,
+    setShowCanvas:(state, value) => state.showCanvas = value,
+    setArrSymbolsParams:(state, value) => state.arrSymbolsParams = value,
+    setSymbolForCorrectingXOffset:(state, value) => state.symbolForCorrectingXOffset = value,
+
   },
   actions: {
   },

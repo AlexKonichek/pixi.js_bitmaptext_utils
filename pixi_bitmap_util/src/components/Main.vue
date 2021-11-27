@@ -20,6 +20,9 @@
               </li>
             </ul>
           </div>
+
+          <Canvas v-if="this.$store.state.showCanvas"/>
+
           <XML_Creator v-if="showXMLCreator"/>
 
            <!--  <div id="previewImage">
@@ -41,7 +44,7 @@ import XML_Creator from "./XML-Creator";
 import SidePanel from "./SidePanel"
 
 export default {
-  components: {OpenFile, XML_Creator, SidePanel },
+  components: {OpenFile, XML_Creator, SidePanel, Canvas},
   data() {
     return {
       arrSmallSumbolIndexesForRenderer:[],
@@ -106,7 +109,6 @@ export default {
       maxWidthReady: false,
       framesArr:[],
       JSONFile: {},
-
       XMLText: '',
       XMLFileName: '',
       xoffset: 0,

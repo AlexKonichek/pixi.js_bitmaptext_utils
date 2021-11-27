@@ -172,23 +172,25 @@ export default {
         //this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
         this.yOffsetCurrent = 0
 
-            /* if(this.symbolsArr[index] === this.symbolForCorrectingXOffset){
+             if(this.$store.state.inputSymbolsArr[index] === this.$store.state.symbolForCorrectingXOffset){
               this.xoffsetForSymbolCorrectingXAdvance = this.xOffset
-            } */
+            } 
             
 
             let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${this.xOffsetCurrent}" yoffset="${this.yOffsetCurrent}" xadvance="${this.xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
               this.XMLText += row
 
-              /* let symbolsParams = {
-                  name:this.symbolsArr[index],
-                  xoffset:this.xOffset,
+               let symbolsParams = {
+                  index,
+                  symbol:this.$store.state.inputSymbolsArr[index],
+                  xoffset:this.xOffsetCurrent,
                   width:frame.w,
                   height:frame.h,
                   x:frame.x,
                   y:frame.y
               }
-              this.arrSymbolsParams.push(symbolsParams) */
+              this.arrSymbolsParams.push(symbolsParams)
+              
         });
       //this.$emit("symbolParamsIsReady",this.arrSymbolsParams)
 
@@ -199,6 +201,8 @@ export default {
         <kernings count="0">
         </kernings>
         </font>`
+
+      this.$store.commit("setArrSymbolsParams", this.arrSymbolsParams)  
     } 
   },
   mounted() {
