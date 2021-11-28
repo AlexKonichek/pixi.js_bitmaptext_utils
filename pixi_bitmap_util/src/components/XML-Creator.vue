@@ -20,26 +20,15 @@ export default {
   components: {},
   data() {
     return {
-      comaOrDotExist:false,
       XMLFileName: "",
       scale: "",
-      smallSymbolsWidthsArr: [],
-      framesArr: [],
-      framesWidths: [],
-      framesHeights: [],
-      coordinatesArr:[],
       charCodeArr:[],
       XMLText:"",
       font: 'font family',
-      maxWidthReady: false,
-      symbols: this.inputSymbols,
-      showTextArea:false,
       xOffset:null,
       xoffsetForSymbolCorrectingXAdvance:0,
       yOffset:null,
       arrSymbolsParams:[],
-      showPreviewComponent:false,
-
       xadvanceCurrent:null,
       yadvanceCurrent:null,
       xOffsetCurrent:null,
@@ -54,33 +43,8 @@ export default {
     '$store.state.currentSmallXadvance': function () {
       this.JSON2XML()
     },
-
-    /* xoffsetForSymbolCorrectingXAdvance: function(){
-      this.$emit("xOffsetForRendererChange",this.xoffsetForSymbolCorrectingXAdvance)
-    },
-    xOffset: function () {
-      console.log("xOffset:",this.xOffset)
-      this.$emit("xOffsetChange",this.xOffset)
-    },
-    
-    finalXAdvance: function () {
-      this.xadvanceCurrent = Number(this.finalXAdvance)
-      console.log("finalXAdvance change in xml creator", this.xadvanceCurrent)
-
-    },
-    finalSmallXAdvance: function () {
-      console.log("finalSmallXAdvance change in xml creator", this.finalSmallXAdvance)
-      this.JSON2XML()
-    },
-    symbolsArr: function () {
-      console.log("symbolsArr in XML-creatore is changed")
-      this.fillCharcodeArr()
-      this.JSON2XML()
-    }, */
     '$store.state.isDataReadyForXMLCreator': function () {
-      console.log("dataReady")
       this.prepareDataForXML()
-      
     }
   },
 
@@ -94,17 +58,14 @@ export default {
   },
   methods: {
      prepareDataForXML() {
-      console.warn("XML-creator:prepareDataForXML")
       this.fillCharcodeArr()
       let data = this.$store.state.jsonData
       this.XMLFileName = Object.values(data)[1].image
       this.scale = Object.values(data)[1].scale
       this.font = Object.values(data)[1].image.split(".")[0]
-      //this.yadvance = this.maxSymbolHeightFromJSON() 
-
       this.JSON2XML()
-  
     },
+
     downloadXML() {
       let xmltext = this.XMLText;
       let name = this.XMLFileName.split('.')[0]
@@ -119,17 +80,11 @@ export default {
       pom.click();
     },
 
-    maxSymbolHeightFromJSON() {
-      return Math.max(...this.framesHeights)
-    },
-
     fillCharcodeArr() {
       this.charCodeArr = []
       this.$store.state.inputSymbolsArr.forEach(symbol => {
         this.charCodeArr.push(symbol.charCodeAt(0))
-        console.log()
       })
-      console.log("fillCharcodeArr:", this.charCodeArr )
     },
     showPreview(){
       this.showPreviewComponent = true
@@ -137,9 +92,6 @@ export default {
 
     JSON2XML() {
       this.arrSymbolsParams = []
-
-      
-      console.warn("JSON2XML",this.$store.state.arrSymbolsHeights[0]);
       //first part of XML file
       this.XMLText = `
 <font>
@@ -171,12 +123,10 @@ export default {
         this.xOffsetCurrent = (Number(this.xadvanceCurrent)- symbolWidth) /2
         //this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
         this.yOffsetCurrent = 0
-
-             if(this.$store.state.inputSymbolsArr[index] === this.$store.state.symbolForCorrectingXOffset){
-              this.xoffsetForSymbolCorrectingXAdvance = this.xOffset
-            } 
+        if(this.$store.state.inputSymbolsArr[index] === this.$store.state.symbolForCorrectingXOffset){
+            this.xoffsetForSymbolCorrectingXAdvance = this.xOffset
+        } 
             
-
             let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${this.xOffsetCurrent}" yoffset="${this.yOffsetCurrent}" xadvance="${this.xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
               this.XMLText += row
 
@@ -192,8 +142,7 @@ export default {
               this.arrSymbolsParams.push(symbolsParams)
               
         });
-      //this.$emit("symbolParamsIsReady",this.arrSymbolsParams)
-
+  
       //end part of XML file
       this.XMLText += `    <char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceForSpaceSymbol}" /><!--   -->\n`
       this.XMLText += `    <char id="9" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="${this.xadvanceForTabSymbol}" /><!--       -->\n`
@@ -201,7 +150,6 @@ export default {
         <kernings count="0">
         </kernings>
         </font>`
-
       this.$store.commit("setArrSymbolsParams", this.arrSymbolsParams)  
     } 
   },

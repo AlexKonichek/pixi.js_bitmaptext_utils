@@ -12,11 +12,11 @@
                     @getImgUrl="imgUrl = $event"
           ></OpenFile>
 
-          <div v-if="showFrameNamesOrderMessage">
+          <div v-if="this.$store.state.showFrameNamesOrderMessage">
             <h2><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
             <ul>
-              <li v-for="symbol in symbols" :key="symbol">
-                {{symbol}}
+              <li v-for="(symbol, index) in symbols" :key="symbol">
+               {{index}} - {{symbol}}
               </li>
             </ul>
           </div>
@@ -24,13 +24,6 @@
           <Canvas v-if="this.$store.state.showCanvas"/>
 
           <XML_Creator v-if="showXMLCreator"/>
-
-           <!--  <div id="previewImage">
-              <img v-if="showImagePreview" :src="imgUrl" width="500"  />
-           </div>-->
-          
-          <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-secondary m-4"  v-on:click="CreateXML">Create XML</button>
-          
         </div>
       </div>
     </div>
@@ -208,22 +201,13 @@ export default {
     },
     
     createShowFrameNameOrderList() {
-      this.showFrameNamesOrderMessage = true
+      this.$store.commit("setShowFrameNamesOrderMessage", true)
 
     },
 
    
     CreateXML() {
-      this.$store.commit("setDataReadyForXMLCreator", true)
-      this.showRenderer = true
-      this.showCreateXMLButton = false
-      this.$store.commit("setShowCreateXMLButton", false)
-      this.showImagePreview = false
-      this.showFrameNamesOrderMessage = false
-     /*  if(this.arrSmallSymbolsWidth.length===0){
-        this.showXadvanceForSmallSymbols = false
-      } */
-      
+     
     },
   
      isAllReady() {

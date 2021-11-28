@@ -71,6 +71,7 @@
             </div>
 
     </div>
+    <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-success m-4"  v-on:click="showXMLComponent">Create XML</button>
     <div id="CanvasButton" v-if="this.$store.state.isDataReadyForXMLCreator">
         <button class="btn btn-success m-3"  v-on:click="showCanvas">Show Demo</button>
     </div>
@@ -159,7 +160,7 @@ export default {
       let inputSymbolsArr = this.$store.state.inputSymbolsArr
       let symbolParamsForCorrectingXOffset = { symbol:"S", width:0, x:0, y:0 }
 
-      if(!inputSymbolsArr.includes(this.symbolForCorrectingXOffset)) {
+      if(!inputSymbolsArr.includes(this.$store.state.symbolForCorrectingXOffset)) {
         this.$store.commit("setSymbolForCorrectingXOffset",  "0")
         }
       
@@ -193,6 +194,11 @@ export default {
 
 
       this.$store.commit("setShowCreateXMLButton", true )
+    },
+    showXMLComponent() {
+         this.$store.commit("setDataReadyForXMLCreator", true)
+         this.$store.commit("setShowCreateXMLButton", false)
+         this.$store.commit("setShowFrameNamesOrderMessage", false)
     },
     chooseSymbolsHandler(e) {
       console.log(e)

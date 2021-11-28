@@ -6,13 +6,11 @@
 
 <script>
 import Main from './components/Main.vue'
-//import Canvas from './components/Canvas.vue'
 
 export default {
   name: 'App',
   components: {
     Main,
-    //Canvas
   },
   
 }

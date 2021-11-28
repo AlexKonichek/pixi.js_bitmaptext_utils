@@ -96,6 +96,7 @@ export default {
             loader.resources[png].texture.baseTexture, atlas
         );
         sheet.parse((...args) => {
+          
           textures = Object.values(args[0])
           this.$store.commit("setTextures", textures)
           this.render(false)

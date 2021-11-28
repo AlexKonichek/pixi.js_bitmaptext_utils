@@ -20,6 +20,7 @@ const store = new Vuex.Store({
     showCreateXMLButton:false,
     showInputError:false,
     showCanvas:false,
+    showFrameNamesOrderMessage:false,
     textures:[],
     currentXadvance:null,
     currentSmallXadvance:null,
@@ -84,6 +85,7 @@ const store = new Vuex.Store({
     setShowCanvas:(state, value) => state.showCanvas = value,
     setArrSymbolsParams:(state, value) => state.arrSymbolsParams = value,
     setSymbolForCorrectingXOffset:(state, value) => state.symbolForCorrectingXOffset = value,
+    setShowFrameNamesOrderMessage:(state, value) => state.showFrameNamesOrderMessage = value,
 
   },
   actions: {
