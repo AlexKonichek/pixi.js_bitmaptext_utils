@@ -20,9 +20,15 @@
               </li>
             </ul>
           </div>
-
-          <Canvas v-if="this.$store.state.showCanvas"/>
-
+          <div class="row">
+            <div class="col-sm-6">
+              <Canvas v-if="this.$store.state.showCanvas"/>
+            </div>
+            <div class="col-sm-6">
+              <FinalPreview v-if="this.$store.state.showCanvas"/>
+            </div>
+          </div>
+          
           <XML_Creator v-if="showXMLCreator"/>
         </div>
       </div>
@@ -35,9 +41,10 @@ import OpenFile from "./OpenFile";
 import Canvas from "./Canvas.vue";
 import XML_Creator from "./XML-Creator";
 import SidePanel from "./SidePanel"
+import FinalPreview from "./FinalPreview.vue"
 
 export default {
-  components: {OpenFile, XML_Creator, SidePanel, Canvas},
+  components: {OpenFile, XML_Creator, SidePanel, Canvas, FinalPreview},
   data() {
     return {
       arrSmallSumbolIndexesForRenderer:[],
