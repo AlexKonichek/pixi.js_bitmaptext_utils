@@ -107,30 +107,38 @@ export default {
           let symbolHeight = frame.h;
           let x = frame.x;
           let y = frame.y;
+
             //define xadvance for dot,comma or similar small symbol
             //to do add arr of all possibly small symbols and checking if it have a current symbols
             if((this.$store.state.inputSymbolsArr[index] === "," || this.$store.state.inputSymbolsArr[index] === ".")) {
                 this.xadvanceCurrent = this.$store.state.currentSmallXadvance === null ? this.$store.getters.xadvanceSmall: this.$store.state.currentSmallXadvance
                 this.$store.commit("setJSONHasSmallSymbols", true)
                 this.yadvanceCurrent = undefined
+                if(this.$store.state.currentSmallXadvance) {
+                  //case when general xadvance is changed
+                  console.log(this.$store.state.currentSmallXadvance)
+                  this.xOffsetCurrent = (this.$store.state.currentSmallXadvance - symbolWidth)
+                } else {
+                  //case when general xadvance not touched(default)
+                  this.xOffsetCurrent = (this.$store.getters.xadvanceSmall- symbolWidth)
+                }
+
                 }
 
               //define xadvance for plain symbols
               else {
               this.xadvanceCurrent = this.$store.state.currentXadvance === null ? this.$store.getters.xadvance : this.$store.state.currentXadvance
               this.yadvanceCurrent = undefined
+                  if(this.$store.state.currentXadvance) {
+                    //case when general xadvance is changed
+                    console.log(this.$store.state.currentXadvance)
+                    this.xOffsetCurrent = (this.$store.state.currentXadvance - symbolWidth)
+                  } else {
+                    //case when general xadvance not touched(default)
+                    this.xOffsetCurrent = (this.$store.getters.xadvance- symbolWidth)
+                  }
               }
-        if(this.$store.state.currentXadvance) {
-          //case when general xadvance is changed
-          console.log(this.$store.state.currentXadvance)
-          this.xOffsetCurrent = (this.$store.state.currentXadvance - symbolWidth)
-        } else {
 
-          //case when general xadvance not touched(default)
-          console.log(this.$store.state.currentXadvance)
-          this.xOffsetCurrent = (this.$store.getters.xadvance- symbolWidth)
-
-        }
        // this.xOffsetCurrent = (Number(this.xadvanceCurrent)- symbolWidth) /2
         //this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
         this.yOffsetCurrent = 0

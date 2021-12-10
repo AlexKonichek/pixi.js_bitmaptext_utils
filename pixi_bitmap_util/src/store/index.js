@@ -29,6 +29,7 @@ const store = new Vuex.Store({
     secondLetterForCorrectingXOffset:"S",
     thirdLetterForCorrectingXOffset:"D",
     digitsSymbolForCorrectingXOffset:"0",
+    comaForCorrectingXOffset:",",
     firstDigitForCorrectingXOffset:"0",
     secondDigitForCorrectingXOffset:"0",
     thirdDigitForCorrectingXOffset:"0",
@@ -66,6 +67,9 @@ const store = new Vuex.Store({
     },
     thirdDigitForCanvas:state => {
       return state.arrSymbolsParams.find(item => item.symbol === state.thirdDigitForCorrectingXOffset)
+    },
+    comaForCanvas: state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.comaForCorrectingXOffset)
     },
     firstLetterForCanvas:state => {
       return state.arrSymbolsParams.find(item => item.symbol === "U")

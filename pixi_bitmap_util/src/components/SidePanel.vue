@@ -42,7 +42,7 @@
 <!--            </div>-->
     </div>
     <div id="generalXadvance">
-        <label class="text-white h4" for="XAdvance">general xadvance</label>
+        <label class="text-white h4" for="XAdvance">xadvance for plain symbols</label>
              <div class="input-group input-group-lg mb-2">
               <input
                   id="XAdvance"
@@ -57,7 +57,7 @@
     </div>
     <div id="smallXadvance">
         <div v-if="this.$store.state.jsonHasSmallSymbols">
-              <label class="text-white h4" for="XAdvanceSmall">xadvance for "." "," and "×"</label>
+              <label class="text-white h4" for="XAdvanceSmall">xadvance for "." ","</label>
               <div class="input-group input-group-lg mb-2">
                 <input
                     id="XAdvanceSmall"

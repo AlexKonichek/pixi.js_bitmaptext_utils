@@ -105,7 +105,7 @@ export default {
     },
 
     render(useCommaSymbol) {
-      console.warn("render")
+      console.warn("render", useCommaSymbol)
       //this.showRenderButton = false
       this.clearStage();
       this.addCanvasBorder();
@@ -115,20 +115,41 @@ export default {
         firstSymbol = this.$store.getters.firstDigitForCanvas
         secondSymbol = this.$store.getters.secondDigitForCanvas
         thirdSymbol = this.$store.getters.thirdDigitForCanvas
+        if(useCommaSymbol) {
+          secondSymbol = this.$store.getters.comaForCanvas
+          this.addSymbol(0, 0, firstSymbol.index, true)
+          let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
+          this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
+
+        }else {
+          this.addSymbol(0, 0, firstSymbol.index, true)
+          let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
+          this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
+          this.addSymbol( xStartForThirdLetter + thirdSymbol.xoffset, 0, thirdSymbol.index, true )
+        }
+
+
       } else {
         firstSymbol = this.$store.getters.firstLetterForCanvas
         secondSymbol = this.$store.getters.secondLetterForCanvas
         thirdSymbol = this.$store.getters.thirdLetterForCanvas
-      }
-
-      this.addSymbol(0, 0, firstSymbol.index, true)
-      if(useCommaSymbol) {
-        //this.addSymbol(this.firstLetterForRender.width + this.comaSymbol.xoffset, 0, this.comaSymbol.index, false)
-      }else{
+        this.addSymbol(0, 0, firstSymbol.index, true)
         let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
         this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
         this.addSymbol( xStartForThirdLetter + thirdSymbol.xoffset, 0, thirdSymbol.index, true )
       }
+
+
+      // if(useCommaSymbol) {
+      //   secondSymbol = this.$store.getters.comaForCanvas
+      //   this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
+      // }
+      // else{
+      //   secondSymbol = this.$store.getters
+      //   let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
+      //   this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
+      //   this.addSymbol( xStartForThirdLetter + thirdSymbol.xoffset, 0, thirdSymbol.index, true )
+      // }
     },
 
      addSymbol(x, y, index, border) {
