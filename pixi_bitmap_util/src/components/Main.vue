@@ -2,10 +2,11 @@
   <main class="bg-secondary">
     <div class="w-100 0">
       <div class="row">
-        <div class="col-sm-3 mr-2">
+        <div class="col-sm-4 mr-2">
           <SidePanel v-if="showSidePanel"/>
+          <ShowDemo v-if="this.$store.state.showCanvas"/>
         </div>
-        <div class="col-sm-9 bg-light ml-3">
+        <div class="col-sm-8 bg-light ml-3">
           <OpenFile v-if="showOpenFile"
                     @json="loadedJSON = $event"
                     @image="loadedPNG = $event"
@@ -16,17 +17,17 @@
             <h2><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
             <ul>
               <li v-for="(symbol, index) in symbols" :key="symbol">
-               {{index}} - {{symbol}}
+              <b>{{index}} - {{symbol}}</b>
               </li>
             </ul>
           </div>
           <div class="row">
-            <div class="col-sm-6">
-              <Canvas v-if="this.$store.state.showCanvas"/>
+            <div class="">
+
             </div>
-            <div class="col-sm-6">
-              <FinalPreview v-if="this.$store.state.showCanvas"/>
-            </div>
+<!--            <div class="col-sm-6">-->
+<!--              <FinalPreview v-if="this.$store.state.showCanvas"/>-->
+<!--            </div>-->
           </div>
           
           <XML_Creator v-if="showXMLCreator"/>
@@ -38,13 +39,13 @@
 <script>
 
 import OpenFile from "./OpenFile";
-import Canvas from "./Canvas.vue";
+import ShowDemo from "./ShowDemo.vue";
 import XML_Creator from "./XML-Creator";
 import SidePanel from "./SidePanel"
 import FinalPreview from "./FinalPreview.vue"
 
 export default {
-  components: {OpenFile, XML_Creator, SidePanel, Canvas, FinalPreview},
+  components: {OpenFile, XML_Creator, SidePanel, ShowDemo},
   data() {
     return {
       arrSmallSumbolIndexesForRenderer:[],

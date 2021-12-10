@@ -25,16 +25,18 @@ const store = new Vuex.Store({
     currentXadvance:null,
     currentSmallXadvance:null,
     jsonHasSmallSymbols:false,
-    symbolForCorrectingXOffset:"S",
+    firstLetterForCorrectingXOffset:"U",
+    secondLetterForCorrectingXOffset:"S",
+    thirdLetterForCorrectingXOffset:"D",
     digitsSymbolForCorrectingXOffset: "0",
     symbolForCorrectingXOffsetSmall:",",
 
-    symbolParamsForCorrectingXOffset:{
-      symbol:"S",
-      width:0,
-      x:0,
-      y:0
-    },
+    // firstLetterParamsForCorrectingXOffset:{
+    //   symbol:"U",
+    //   width:0,
+    //   x:0,
+    //   y:0
+    // },
   },
   getters: {
     framesArrLength: state => {
@@ -52,15 +54,25 @@ const store = new Vuex.Store({
     yadvance:state => {
       return Math.max(...state.arrSymbolsHeights)
     },
-    secondSymbolXoffsetForCanvas:state => {
-      return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffset)
+    firstLetterForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === "U")
     },
-    secondSmallSymbolXoffsetForCanvas:state => {
-      return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffsetSmall)
+    secondLetterForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.secondLetterForCorrectingXOffset)
     },
-    comaParams:state => {
-      return state.arrSymbolsParams.find(item => item.symbol === ",")
-    }
+    thirdLetterForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.thirdLetterForCorrectingXOffset)
+    },
+
+    // secondSymbolXoffsetForCanvas:state => {
+    //   return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffset)
+    // },
+    // secondSmallSymbolXoffsetForCanvas:state => {
+    //   return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffsetSmall)
+    // },
+    // comaParams:state => {
+    //   return state.arrSymbolsParams.find(item => item.symbol === ",")
+    // }
 
   },
   mutations: {
@@ -84,7 +96,7 @@ const store = new Vuex.Store({
     setSymbolParamsForCorrectingXOffset: (state, value) => state.symbolParamsForCorrectingXOffset = value,
     setShowCanvas:(state, value) => state.showCanvas = value,
     setArrSymbolsParams:(state, value) => state.arrSymbolsParams = value,
-    setSymbolForCorrectingXOffset:(state, value) => state.symbolForCorrectingXOffset = value,
+    setSymbolForCorrectingXOffset:(state, value) => state.firstLetterForCorrectingXOffset = value,
     setShowFrameNamesOrderMessage:(state, value) => state.showFrameNamesOrderMessage = value,
 
   },

@@ -6,11 +6,11 @@
 import * as PIXI from "pixi.js";
 
 export default {
-  name: "Canvas",
+  name: "ShowDemo",
   data() {
     return {
       app: null,
-      canvasWidths:300,
+      canvasWidths:500,
       canvasHeight:300,
       spritesheetWrapper:null,
 
@@ -27,14 +27,14 @@ export default {
     }
   },
   computed: {
-    xoffsetFinal(){
+    XadvanceFinal(){
       if(this.$store.state.currentXadvance) {
         return this.$store.state.currentXadvance
       } else {
         return this.$store.getters.xadvance
       }
     },
-    xoffsetSmallFinal(){
+    XadvanceSmallFinal(){
       if(this.$store.state.currentSmallXadvance) {
         return this.$store.state.currentSmallXadvance
       } else {
@@ -53,14 +53,13 @@ export default {
     secondSmallSymbolForRender() {
       return this.$store.getters.secondSmallSymbolXoffsetForCanvas
     },
-    firstSymbolForRender() {
-
+    /*firstLetterForRender() {
       let params = {
         symbol:"", width:0, x:0, y:0, index:0
       };
       this.$store.state.textures.forEach((texture, index)=> {
-        if((texture.frame.x === this.$store.state.symbolParamsForCorrectingXOffset.x) && ( texture.frame.y === this.$store.state.symbolParamsForCorrectingXOffset.y)) {
-          params.symbol = this.$store.state.symbolParamsForCorrectingXOffset.symbol
+        if((texture.frame.x === this.$store.state.firstLetterParamsForCorrectingXOffset.x) && ( texture.frame.y === this.$store.state.firstLetterParamsForCorrectingXOffset.y)) {
+          params.symbol = this.$store.state.firstLetterParamsForCorrectingXOffset.symbol
           params.index = index
           params.x = texture.frame.x
           params.y = texture.frame.y
@@ -68,15 +67,16 @@ export default {
         }
       })
       return params
-    },
+    },*/
 
   },
   mounted() {
     this.app = new PIXI.Application({
-      width: 400,
-      height: 300,
-      transparent: false,
+      width: this.canvasWidths,
+      height: this.canvasHeight,
+      transparent: true,
       antialias: true,
+      backgroundColor: 0xffffff
     });
     this.$el.appendChild(this.app.view);
     this.app.renderer.view.style.display = "block";
@@ -109,12 +109,18 @@ export default {
       //this.showRenderButton = false
       this.clearStage();
       this.addCanvasBorder();
-      
-      this.addSymbol(0, 0, this.firstSymbolForRender.index, false)
+     // this.secondLetterForRender = this.firstLetterForRender
+      let firstLetter = this.$store.getters.firstLetterForCanvas
+      let secondLetter = this.$store.getters.secondLetterForCanvas
+      let thirdLetter = this.$store.getters.thirdLetterForCanvas
+      console.warn(firstLetter)
+      this.addSymbol(0, 0, firstLetter.index, true)
       if(useCommaSymbol) {
-        this.addSymbol(this.firstSymbolForRender.width + this.comaSymbol.xoffset, 0, this.comaSymbol.index, false)
+        //this.addSymbol(this.firstLetterForRender.width + this.comaSymbol.xoffset, 0, this.comaSymbol.index, false)
       }else{
-        this.addSymbol(this.firstSymbolForRender.width + this.$store.getters.secondSymbolXoffsetForCanvas.xoffset , 0, this.firstSymbolForRender.index, false)
+        let xStartForThirdLetter = firstLetter.width + secondLetter.xoffset + secondLetter.width
+        this.addSymbol(firstLetter.width + secondLetter.xoffset , 0, secondLetter.index, true)
+        this.addSymbol( xStartForThirdLetter + thirdLetter.xoffset, 0, thirdLetter.index, true )
       }
     },
 
@@ -129,7 +135,7 @@ export default {
       spriteSheetBorder.drawRect(0, 0, texture.orig.width, texture.orig.height);
       spriteSheetBorder.endFill();
       spriteContainer.addChild(symbolSprite)
-      if(this.showBorder){
+      if(border){
         spriteContainer.addChild(spriteSheetBorder)
       }
       this.spritesheetWrapper.addChild(spriteContainer)

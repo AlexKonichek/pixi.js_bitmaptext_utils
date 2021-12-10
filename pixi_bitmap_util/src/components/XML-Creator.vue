@@ -95,7 +95,7 @@ export default {
       //first part of XML file
       this.XMLText = `
 <font>
-  <info face="${this.font}" size="size" />
+  <info face="${this.font}" size="${this.$store.state.arrSymbolsHeights[0]}" />
   <common lineHeight="${this.$store.state.arrSymbolsHeights[0]}" scaleW="494" scaleH="479" pages="1" />
   <pages>
     <page id="0" file="${this.font}.png" />
@@ -120,7 +120,18 @@ export default {
               this.xadvanceCurrent = this.$store.state.currentXadvance === null ? this.$store.getters.xadvance : this.$store.state.currentXadvance
               this.yadvanceCurrent = undefined
               }
-        this.xOffsetCurrent = (Number(this.xadvanceCurrent)- symbolWidth) /2
+        if(this.$store.state.currentXadvance) {
+          //case when general xadvance is changed
+          console.log(this.$store.state.currentXadvance)
+          this.xOffsetCurrent = (this.$store.state.currentXadvance - symbolWidth)
+        } else {
+
+          //case when general xadvance not touched(default)
+          console.log(this.$store.state.currentXadvance)
+          this.xOffsetCurrent = (this.$store.getters.xadvance- symbolWidth)
+
+        }
+       // this.xOffsetCurrent = (Number(this.xadvanceCurrent)- symbolWidth) /2
         //this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
         this.yOffsetCurrent = 0
         if(this.$store.state.inputSymbolsArr[index] === this.$store.state.symbolForCorrectingXOffset){
