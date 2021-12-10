@@ -63,6 +63,12 @@ const store = new Vuex.Store({
     thirdLetterForCanvas:state => {
       return state.arrSymbolsParams.find(item => item.symbol === state.thirdLetterForCorrectingXOffset)
     },
+    canvasWidths: state => {
+      return Math.max(...state.arrSymbolsWidths) * 3
+    },
+    canvasHeight: state => {
+      return Math.max(...state.arrSymbolsHeights)
+    }
 
     // secondSymbolXoffsetForCanvas:state => {
     //   return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffset)

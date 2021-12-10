@@ -72,8 +72,8 @@ export default {
   },
   mounted() {
     this.app = new PIXI.Application({
-      width: this.canvasWidths,
-      height: this.canvasHeight,
+      width: this.$store.getters.canvasWidths,
+      height: this.$store.getters.canvasHeight,
       transparent: true,
       antialias: true,
       backgroundColor: 0xffffff
@@ -145,7 +145,7 @@ export default {
       this.spritesheetWrapper = new PIXI.Container()
       this.spriteSheetBorder = new PIXI.Graphics();
       this.spriteSheetBorder.lineStyle(2, 0x000000, 1);
-      this.spriteSheetBorder.drawRect(0, 0, this.canvasWidths, this.canvasHeight);
+      this.spriteSheetBorder.drawRect(0, 0, this.$store.getters.canvasWidths, this.$store.getters.canvasHeight);
       this.spriteSheetBorder.endFill();
       this.spriteSheetBorder.x = 0;
       this.spriteSheetBorder.y = 0;
