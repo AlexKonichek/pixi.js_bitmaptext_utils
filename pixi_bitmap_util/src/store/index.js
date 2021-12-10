@@ -28,7 +28,11 @@ const store = new Vuex.Store({
     firstLetterForCorrectingXOffset:"U",
     secondLetterForCorrectingXOffset:"S",
     thirdLetterForCorrectingXOffset:"D",
-    digitsSymbolForCorrectingXOffset: "0",
+    digitsSymbolForCorrectingXOffset:"0",
+    firstDigitForCorrectingXOffset:"0",
+    secondDigitForCorrectingXOffset:"0",
+    thirdDigitForCorrectingXOffset:"0",
+
     symbolForCorrectingXOffsetSmall:",",
 
     // firstLetterParamsForCorrectingXOffset:{
@@ -54,6 +58,15 @@ const store = new Vuex.Store({
     yadvance:state => {
       return Math.max(...state.arrSymbolsHeights)
     },
+    firstDigitForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.firstDigitForCorrectingXOffset)
+    },
+    secondDigitForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.secondDigitForCorrectingXOffset)
+    },
+    thirdDigitForCanvas:state => {
+      return state.arrSymbolsParams.find(item => item.symbol === state.thirdDigitForCorrectingXOffset)
+    },
     firstLetterForCanvas:state => {
       return state.arrSymbolsParams.find(item => item.symbol === "U")
     },
@@ -68,6 +81,9 @@ const store = new Vuex.Store({
     },
     canvasHeight: state => {
       return Math.max(...state.arrSymbolsHeights)
+    },
+    isDigits:state => {
+      return state.inputSymbolsArr.includes(",")
     }
 
     // secondSymbolXoffsetForCanvas:state => {

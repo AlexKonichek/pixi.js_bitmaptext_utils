@@ -110,17 +110,24 @@ export default {
       this.clearStage();
       this.addCanvasBorder();
      // this.secondLetterForRender = this.firstLetterForRender
-      let firstLetter = this.$store.getters.firstLetterForCanvas
-      let secondLetter = this.$store.getters.secondLetterForCanvas
-      let thirdLetter = this.$store.getters.thirdLetterForCanvas
-      console.warn(firstLetter)
-      this.addSymbol(0, 0, firstLetter.index, true)
+      let firstSymbol, secondSymbol, thirdSymbol
+      if(this.$store.getters.isDigits) {
+        firstSymbol = this.$store.getters.firstDigitForCanvas
+        secondSymbol = this.$store.getters.secondDigitForCanvas
+        thirdSymbol = this.$store.getters.thirdDigitForCanvas
+      } else {
+        firstSymbol = this.$store.getters.firstLetterForCanvas
+        secondSymbol = this.$store.getters.secondLetterForCanvas
+        thirdSymbol = this.$store.getters.thirdLetterForCanvas
+      }
+
+      this.addSymbol(0, 0, firstSymbol.index, true)
       if(useCommaSymbol) {
         //this.addSymbol(this.firstLetterForRender.width + this.comaSymbol.xoffset, 0, this.comaSymbol.index, false)
       }else{
-        let xStartForThirdLetter = firstLetter.width + secondLetter.xoffset + secondLetter.width
-        this.addSymbol(firstLetter.width + secondLetter.xoffset , 0, secondLetter.index, true)
-        this.addSymbol( xStartForThirdLetter + thirdLetter.xoffset, 0, thirdLetter.index, true )
+        let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
+        this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
+        this.addSymbol( xStartForThirdLetter + thirdSymbol.xoffset, 0, thirdSymbol.index, true )
       }
     },
 
