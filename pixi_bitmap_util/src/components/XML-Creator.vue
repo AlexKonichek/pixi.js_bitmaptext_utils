@@ -50,10 +50,10 @@ export default {
 
   computed: {
     xadvanceForSpaceSymbol() {
-      return Math.floor(this.xadvanceCurrent * 0.25)
+      return Math.max(...this.$store.state.arrSymbolsWidths)* 0.25
     },
     xadvanceForTabSymbol() {
-      return Math.floor(this.xadvanceCurrent * 0.7)
+      return Math.max(...this.$store.state.arrSymbolsWidths )* 0.7
     }
   },
   methods: {

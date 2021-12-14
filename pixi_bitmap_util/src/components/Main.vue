@@ -29,7 +29,10 @@
 <!--              <FinalPreview v-if="this.$store.state.showCanvas"/>-->
 <!--            </div>-->
           </div>
-          
+<!--          <div  class="form-check form-switch">-->
+<!--            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">-->
+<!--            <label class="form-check-label" for="flexSwitchCheckDefault">Show XMl</label>-->
+<!--          </div>-->
           <XML_Creator v-if="showXMLCreator"/>
         </div>
       </div>
