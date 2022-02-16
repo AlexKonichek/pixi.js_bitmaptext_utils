@@ -152,7 +152,7 @@ export default {
                let symbolsParams = {
                   index,
                   symbol:this.$store.state.inputSymbolsArr[index],
-                  xoffset:this.xOffsetCurrent,
+                  xoffset:this.xOffsetCurrent*2,
                   width:frame.w,
                   height:frame.h,
                   x:frame.x,
