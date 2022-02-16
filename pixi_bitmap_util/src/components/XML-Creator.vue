@@ -132,10 +132,10 @@ export default {
                   if(this.$store.state.currentXadvance) {
                     //case when general xadvance is changed
                     console.log(this.$store.state.currentXadvance)
-                    this.xOffsetCurrent = (this.$store.state.currentXadvance - symbolWidth)
+                    this.xOffsetCurrent = (this.$store.state.currentXadvance - symbolWidth)/2
                   } else {
                     //case when general xadvance not touched(default)
-                    this.xOffsetCurrent = (this.$store.getters.xadvance- symbolWidth)
+                    this.xOffsetCurrent = (this.$store.getters.xadvance- symbolWidth)/2
                   }
               }
 

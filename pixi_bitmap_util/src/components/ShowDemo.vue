@@ -117,7 +117,7 @@ export default {
         thirdSymbol = this.$store.getters.thirdDigitForCanvas
         if(useCommaSymbol) {
           secondSymbol = this.$store.getters.comaForCanvas
-          this.addSymbol(0, 0, firstSymbol.index, true)
+          this.addSymbol(0, 0, secondSymbol.index, true)
           let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
           this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
 
