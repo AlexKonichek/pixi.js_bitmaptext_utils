@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="slidePanel m-2">
     <div id="RequiredSymbols">
-      <label class="text-white h4 mt-2" for="symbols">Required symbols</label>
+      <label class="text-white mt-2" for="symbols">Required symbols</label>
       <div class="input-group input-group-lg mb-2">
         <input
             type="text"
@@ -21,7 +21,7 @@
     </div>
     <div id="ChooseSymbolsSet">
       <div>
-        <label class="label text-white h4" for="Select">Choose symbols set</label>
+        <label class="label text-white" for="Select">Choose symbols set</label>
         <select class="form-control form-control-lg mb-2" id="Select" v-model="inputSymbols"
                 v-on:change="chooseSymbolsHandler">
           <option :value="this.selectOption1">{{ this.selectOption1 }}</option>
@@ -29,21 +29,8 @@
         </select>
       </div>
     </div>
-    <div id="FontFamily">
-      <!-- <label class="text-white h4" for="font-family">Font family</label>-->
-      <!--            <div class="input-group input-group-lg m-3">-->
-      <!--              <input-->
-      <!--                  type="text"-->
-      <!--                  id="font-family"-->
-      <!--                  ref="inputSymbols"-->
-      <!--                  class="form-control mr-3"-->
-      <!--                  v-model="font"-->
-      <!--                  required-->
-      <!--              >-->
-      <!--            </div>-->
-    </div>
     <div id="generalXadvance">
-      <label class="text-white h4" for="XAdvance">xadvance for plain symbols</label>
+      <label class="text-white" for="XAdvance">xadvance for plain symbols</label>
       <div class="input-group input-group-lg mb-2">
         <input
             id="XAdvance"
@@ -58,7 +45,7 @@
     </div>
 
     <div v-if="this.$store.getters.hasDotSymbol">
-      <label class="text-white h4" for="XAdvanceSmall">xadvance for "." ","</label>
+      <label class="text-white" for="XAdvanceSmall">xadvance for "." ","</label>
       <div class="input-group input-group-lg mb-2">
         <input
             id="XAdvanceSmall"
@@ -72,7 +59,7 @@
     </div>
     <div v-if="this.$store.getters.hasDotSymbol">
         <div>
-          <label class="text-white h4" for="YAdvanceSmall">y-axis offsets for "." ","</label>
+          <label class="text-white" for="YAdvanceSmall">y-axis offsets for "." ","</label>
           <div class="input-group input-group-lg mb-2">
             <input
                 id="YAdvanceSmall"
@@ -87,7 +74,7 @@
     </div>
     <div v-if="this.$store.getters.hasMultiplierSymbol">
         <div>
-          <label class="text-white h4" for="multiplier">y-axis offsets for "×"</label>
+          <label class="text-white" for="multiplier">y-axis offsets for "×"</label>
           <div class="input-group input-group-lg mb-2">
             <input
                 id="multiplier"
@@ -106,9 +93,6 @@
     </button>
     <div id="CanvasButton" v-if="this.$store.state.isDataReadyForXMLCreator">
       <button class="btn btn-success m-3" v-on:click="showCanvas">Show Demo</button>
-    </div>
-    <div id="clearButton">
-      <button ref='refresh' class="btn btn-light m-3" v-on:click="refreshPage">Clear</button>
     </div>
 
 
@@ -271,4 +255,8 @@ export default {
 </script>
 
 <style>
+.slidePanel {
+  overflow: auto;
+  height: 50vh;
+}
 </style>

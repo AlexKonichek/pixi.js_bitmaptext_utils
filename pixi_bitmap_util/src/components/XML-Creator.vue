@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div class="row m-3">
-      <div>
+    <div class="XML m-3">
+      <div class="xml-area">
         <div class="form-group">
-          <label class="h4 text-dark" for="XML">XML</label>
-          <textarea class="form-control" id="XML" v-model="XMLText" rows="28" cols="50"></textarea>
-          <button class="btn btn-success btn-lg m-3"  v-on:click="this.downloadXML">Save XML</button>
+          <textarea class="form-control" id="XML" v-model="XMLText" rows="13" cols="50"></textarea>
+          <button class="btn btn-success m-3"  v-on:click="this.downloadXML">Save XML</button>
         </div>
       </div>
     </div>
@@ -104,7 +103,7 @@ export default {
       //first part of XML file
       this.XMLText = `
 <font>
-  <info face="${this.font}" size="${this.$store.state.arrSymbolsHeights[0]}" />
+  <info face="${this.font}" size="${this.$store.state.fontSize}" />
   <common lineHeight="${this.$store.state.arrSymbolsHeights[0]}" scaleW="494" scaleH="479" pages="1" />
   <pages>
     <page id="0" file="${this.font}.png" />
@@ -190,3 +189,12 @@ export default {
 }
 
 </script>
+<style>
+.xml-area {
+
+}
+.XML {
+  overflow: auto;
+  height: 60vh;
+}
+</style>

@@ -15,6 +15,7 @@ const store = new Vuex.Store({
     loadedPNG: null,
     jsonData:null,
     framesArr:[],
+    fontSize: 80,
     inputSymbolsArr:[],
     isTrimmed: false,
     isDataReadyForXMLCreator:false,
@@ -98,7 +99,7 @@ const store = new Vuex.Store({
       return state.arrSymbolsParams.find(item => item.symbol === state.thirdLetterForCorrectingXOffset)
     },
     canvasWidths: state => {
-      return Math.max(...state.arrSymbolsWidths) * 10
+      return Math.max(...state.arrSymbolsWidths) * 12
     },
     canvasHeight: state => {
       return Math.max(...state.arrSymbolsHeights)

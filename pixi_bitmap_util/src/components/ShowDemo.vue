@@ -10,9 +10,10 @@ export default {
   data() {
     return {
       app: null,
-      canvasWidths: 1200,
-      canvasHeight: 300,
+      // canvasWidths: 1200,
+      // canvasHeight: 300,
       spritesheetWrapper: null,
+      arrForPreview:[]
 
     };
   },
@@ -59,7 +60,7 @@ export default {
         sheet.parse((...args) => {
           textures = Object.values(args[0])
           this.$store.commit("setTextures", textures)
-          this.render(false)
+          this.render()
         });
       })
     },
@@ -67,9 +68,14 @@ export default {
     render() {
       this.clearStage();
       this.addCanvasBorder();
+      if(this.$store.getters.hasDotSymbol) {
+        this.arrForPreview = this.$store.state.arrSymbolsForPreview
+      } else {
+        this.arrForPreview = ["U","S","D"]
+      }
       let currentX = 0;
       let previousSymbolParams = null;
-      this.$store.state.arrSymbolsForPreview.forEach((symbol, i, arr) => {
+      this.arrForPreview.forEach((symbol, i, arr) => {
           let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
           if (i !== 0) {
             previousSymbolParams = this.$store.getters.getSymbolById(arr[i-1]);
@@ -105,7 +111,7 @@ export default {
       this.spriteSheetBorder.endFill();
       this.spriteSheetBorder.x = 0;
       this.spriteSheetBorder.y = 0;
-      this.spritesheetWrapper.addChild(this.spriteSheetBorder)
+      //this.spritesheetWrapper.addChild(this.spriteSheetBorder)
       this.app.stage.addChild(this.spritesheetWrapper);
     },
     clearStage() {

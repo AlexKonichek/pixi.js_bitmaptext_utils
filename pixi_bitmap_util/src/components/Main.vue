@@ -1,41 +1,40 @@
 <template lang="html">
-  <main class="bg-secondary h-100">
-    <div class="w-100 0">
-      <div class="row">
-        <div class="col-sm-4 mr-2">
-          <SidePanel v-if="showSidePanel"/>
+
+  <main>
+    <div class="h-100 d-flex flex-column">
+      <div class="row flex-grow-1 bg-secondary">
+        <div class="col-lg-3 mr-3 bg-secondary">
+          <SidePanel v-show="showSidePanel"/>
         </div>
-        <div class="col-sm-8 bg-light ml-3">
+        <div class="col-lg-9 ml-3">
           <OpenFile v-if="showOpenFile"
                     @json="loadedJSON = $event"
                     @image="loadedPNG = $event"
                     @getImgUrl="imgUrl = $event"
           ></OpenFile>
-
           <div v-if="this.$store.state.showFrameNamesOrderMessage">
             <h2><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
             <ul>
               <li v-for="(symbol, index) in symbols" :key="symbol">
-              <b>{{index}} - {{symbol}}</b>
+                <b>{{index}} - {{symbol}}</b>
               </li>
             </ul>
           </div>
           <div class="row">
-            <div class="">
-
+            <div class="h-50">
+              <XML_Creator v-if="showXMLCreator"/>
             </div>
-
           </div>
-          <XML_Creator v-if="showXMLCreator"/>
+
         </div>
       </div>
-      <div class="row">
-        <div>
+      <div class="row flex-grow-1">
+        <div class="m-lg-3">
           <ShowDemo v-if="this.$store.state.showCanvas"/>
         </div>
-
       </div>
     </div>
+
   </main>
 </template>
 <script>
@@ -242,6 +241,13 @@ export default {
 }
 </script>
 <style>
+.height75 {
+  height: 75vh;
+}
+.height25 {
+  height: 25vh;
+}
+main
   ul {
     list-style: none;
   }
