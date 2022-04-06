@@ -18,45 +18,17 @@ export default {
   },
   watch: {
     '$store.state.currentXadvance': function () {
-      console.warn("render", this.$store.state.currentXadvance)
       this.render()
     },
     '$store.state.currentSmallXadvance': function () {
-      console.warn("render", this.$store.state.currentSmallXadvance)
       this.render()
     },
     '$store.state.currentSmallYadvance': function () {
-      console.warn("render", this.$store.state.currentSmallYadvance)
+      this.render()
+    },
+    '$store.state.currentMultiplierYoffset': function () {
       this.render()
     }
-  },
-  computed: {
-    XadvanceFinal() {
-      if (this.$store.state.currentXadvance) {
-        return this.$store.state.currentXadvance
-      } else {
-        return this.$store.getters.xadvance
-      }
-    },
-    XadvanceSmallFinal() {
-      if (this.$store.state.currentSmallXadvance) {
-        return this.$store.state.currentSmallXadvance
-      } else {
-        return this.$store.getters.xadvanceSmall
-      }
-    },
-    itemWidth() {
-      return this.symbolWidth
-    },
-    comaSymbol() {
-      return this.$store.getters.comaParams
-    },
-    secondSymbolForRender() {
-      return this.$store.getters.secondSymbolXoffsetForCanvas
-    },
-    secondSmallSymbolForRender() {
-      return this.$store.getters.secondSmallSymbolXoffsetForCanvas
-    },
 
   },
   mounted() {

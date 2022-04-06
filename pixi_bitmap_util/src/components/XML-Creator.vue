@@ -44,9 +44,12 @@ export default {
     },
 
     '$store.state.currentSmallYadvance': function () {
-      console.warn(this.$store.state.currentSmallYadvance)
       this.JSON2XML()
     },
+    '$store.state.currentMultiplierYoffset': function () {
+      this.JSON2XML()
+    },
+
 
 
     '$store.state.isDataReadyForXMLCreator': function () {
@@ -115,7 +118,11 @@ export default {
           let y = frame.y;
           let yoffset = 0;
 
-            //define xadvance for dot,comma or similar small symbol
+             if(this.$store.state.inputSymbolsArr[index] === "×") {
+               yoffset = this.$store.state.currentMultiplierYoffset
+           }
+
+          //define xadvance for dot,comma or similar small symbol
             //to do add arr of all possibly small symbols and checking if it have a current symbols
             if((this.$store.state.inputSymbolsArr[index] === "," || this.$store.state.inputSymbolsArr[index] === ".")) {
                 this.xadvanceCurrent = this.$store.state.currentSmallXadvance === null ? this.$store.getters.xadvanceSmall: this.$store.state.currentSmallXadvance

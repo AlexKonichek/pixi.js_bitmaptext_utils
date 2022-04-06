@@ -56,36 +56,49 @@
       </div>
 
     </div>
-    <div id="smallXadvance">
-      <div v-if="this.$store.state.jsonHasSmallSymbols">
-        <label class="text-white h4" for="XAdvanceSmall">xadvance for "." ","</label>
-        <div class="input-group input-group-lg mb-2">
-          <input
-              id="XAdvanceSmall"
-              class="form-control mr-3"
-              ref="XAdvance"
-              v-model="maxSmallSymbolWidthModel"
-              step="1"
-              type="number"
-          >
-        </div>
-      </div>
 
-    </div>
-    <div id="smallYadvance">
-      <div>
-        <label class="text-white h4" for="YAdvanceSmall">y offsets for "." ","</label>
-        <div class="input-group input-group-lg mb-2">
-          <input
-              id="YAdvanceSmall"
-              class="form-control mr-3"
-              ref="XAdvance"
-              v-model="maxSmallSymbolHeightModel"
-              step="1"
-              type="number"
-          >
-        </div>
+    <div v-if="this.$store.getters.hasDotSymbol">
+      <label class="text-white h4" for="XAdvanceSmall">xadvance for "." ","</label>
+      <div class="input-group input-group-lg mb-2">
+        <input
+            id="XAdvanceSmall"
+            class="form-control mr-3"
+            ref="XAdvance"
+            v-model="maxSmallSymbolWidthModel"
+            step="1"
+            type="number"
+        >
       </div>
+    </div>
+    <div v-if="this.$store.getters.hasDotSymbol">
+        <div>
+          <label class="text-white h4" for="YAdvanceSmall">y-axis offsets for "." ","</label>
+          <div class="input-group input-group-lg mb-2">
+            <input
+                id="YAdvanceSmall"
+                class="form-control mr-3"
+                ref="XAdvance"
+                v-model="maxSmallSymbolHeightModel"
+                step="1"
+                type="number"
+            >
+          </div>
+        </div>
+    </div>
+    <div v-if="this.$store.getters.hasMultiplierSymbol">
+        <div>
+          <label class="text-white h4" for="multiplier">y-axis offsets for "×"</label>
+          <div class="input-group input-group-lg mb-2">
+            <input
+                id="multiplier"
+                class="form-control mr-3"
+                ref="XAdvance"
+                v-model="maxMultiplierSymbolHeightModel"
+                step="1"
+                type="number"
+            >
+          </div>
+        </div>
 
     </div>
     <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-success m-4" v-on:click="showXMLComponent">
@@ -162,6 +175,15 @@ export default {
         return this.$store.state.currentSmallYadvance !== null ? this.$store.state.currentSmallYadvance : this.initialYadvanceSmall
       }
     },
+    maxMultiplierSymbolHeightModel: {
+      set(value) {
+        this.$store.commit('updateCurrentMultiplierYoffset', value)
+      },
+      get() {
+        return this.$store.state.currentSmallYadvance !== null ? this.$store.state.currentSmallYadvance : this.initialYadvanceSmall
+      }
+    },
+
 
   },
   methods: {

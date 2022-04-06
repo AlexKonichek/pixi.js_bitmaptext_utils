@@ -6,7 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     arrSymbolsWidths:[],
-    arrSymbolsForPreview:["0",",","0",".","0"],
+    arrSymbolsForPreview:["0",",","0",".","0","×"],
     arrSymbolsHeights:[],
     arrSmallSymbolsWidth:[],
     arrSmallSymbolsHeights:[],
@@ -26,6 +26,7 @@ const store = new Vuex.Store({
     currentXadvance:null,
     currentSmallXadvance:null,
     currentSmallYadvance:0,
+    currentMultiplierYoffset:0,
 
     jsonHasSmallSymbols:false,
     firstLetterForCorrectingXOffset:"U",
@@ -47,6 +48,15 @@ const store = new Vuex.Store({
     // },
   },
   getters: {
+    hasDotSymbol: (state) => {
+      return state.inputSymbolsArr.includes(".");
+    },
+    hasCommaSymbol: (state) => {
+      return state.inputSymbolsArr.includes(",");
+    },
+    hasMultiplierSymbol: (state) => {
+      return state.inputSymbolsArr.includes("×");
+    },
     getSymbolById: (state) => (id) => {
       return state.arrSymbolsParams.find(symbolParams => symbolParams.symbol === id)
     },
@@ -124,6 +134,7 @@ const store = new Vuex.Store({
     updateCurrentXadvance: (state, value) => state.currentXadvance = value,
     updateCurrentSmallXadvance: (state, value) => state.currentSmallXadvance = value,
     updateCurrentSmallYadvance: (state, value) => state.currentSmallYadvance = value,
+    updateCurrentMultiplierYoffset: (state, value) => state.currentMultiplierYoffset = value,
     setJSONHasSmallSymbols: (state, value) => state.jsonHasSmallSymbols = value,
     setShowInputError: (state, value) => state.showInputError = value,
     setTextures: (state, value) => state.textures = value,
