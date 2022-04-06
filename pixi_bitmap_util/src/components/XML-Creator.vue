@@ -50,10 +50,10 @@ export default {
 
   computed: {
     xadvanceForSpaceSymbol() {
-      return Math.max(...this.$store.state.arrSymbolsWidths)* 0.25
+      return Math.trunc(Math.max(...this.$store.state.arrSymbolsWidths)* 0.25)
     },
     xadvanceForTabSymbol() {
-      return Math.max(...this.$store.state.arrSymbolsWidths )* 0.7
+      return Math.trunc(Math.max(...this.$store.state.arrSymbolsWidths )* 0.7)
     }
   },
   methods: {
@@ -146,13 +146,14 @@ export default {
             this.xoffsetForSymbolCorrectingXAdvance = this.xOffset
         } 
             
-            let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${this.xOffsetCurrent}" yoffset="${this.yOffsetCurrent}" xadvance="${this.xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
+            let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${0}" yoffset="${this.yOffsetCurrent}" xadvance="${this.xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
               this.XMLText += row
 
                let symbolsParams = {
                   index,
                   symbol:this.$store.state.inputSymbolsArr[index],
                   xoffset:this.xOffsetCurrent*2,
+                  xadvance: this.xadvanceCurrent,
                   width:frame.w,
                   height:frame.h,
                   x:frame.x,
