@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     arrSymbolsWidths:[],
+    arrSymbolsForPreview:["0",",","0",".","0"],
     arrSymbolsHeights:[],
     arrSmallSymbolsWidth:[],
     arrSmallSymbolsHeights:[],
@@ -24,6 +25,8 @@ const store = new Vuex.Store({
     textures:[],
     currentXadvance:null,
     currentSmallXadvance:null,
+    currentSmallYadvance:null,
+
     jsonHasSmallSymbols:false,
     firstLetterForCorrectingXOffset:"U",
     secondLetterForCorrectingXOffset:"S",
@@ -44,6 +47,9 @@ const store = new Vuex.Store({
     // },
   },
   getters: {
+    getSymbolById: (state) => (id) => {
+      return state.arrSymbolsParams.find(symbolParams => symbolParams.symbol === id)
+    },
     framesArrLength: state => {
       return state.framesArr.length;
     },
@@ -54,7 +60,7 @@ const store = new Vuex.Store({
       return Math.max(...state.arrSmallSymbolsWidth)
     },
     yadvanceSmall:state => {
-      return Math.max(...state.arrSmallSymbolsWidth)
+      return Math.max(...state.arrSmallSymbolsHeights)
     },
     yadvance:state => {
       return Math.max(...state.arrSymbolsHeights)
@@ -81,7 +87,7 @@ const store = new Vuex.Store({
       return state.arrSymbolsParams.find(item => item.symbol === state.thirdLetterForCorrectingXOffset)
     },
     canvasWidths: state => {
-      return Math.max(...state.arrSymbolsWidths) * 3
+      return Math.max(...state.arrSymbolsWidths) * 10
     },
     canvasHeight: state => {
       return Math.max(...state.arrSymbolsHeights)
@@ -116,6 +122,7 @@ const store = new Vuex.Store({
     setShowCreateXMLButton: (state, show) => state.showCreateXMLButton = show,
     updateCurrentXadvance: (state, value) => state.currentXadvance = value,
     updateCurrentSmallXadvance: (state, value) => state.currentSmallXadvance = value,
+    updateCurrentSmallYadvance: (state, value) => state.currentSmallYadvance = value,
     setJSONHasSmallSymbols: (state, value) => state.jsonHasSmallSymbols = value,
     setShowInputError: (state, value) => state.showInputError = value,
     setTextures: (state, value) => state.textures = value,

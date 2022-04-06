@@ -10,32 +10,32 @@ export default {
   data() {
     return {
       app: null,
-      canvasWidths:500,
-      canvasHeight:300,
-      spritesheetWrapper:null,
+      canvasWidths: 1200,
+      canvasHeight: 300,
+      spritesheetWrapper: null,
 
     };
   },
   watch: {
-    '$store.state.currentXadvance': function() {
-      console.warn("render",this.$store.state.currentXadvance)
-      this.render(false)
+    '$store.state.currentXadvance': function () {
+      console.warn("render", this.$store.state.currentXadvance)
+      this.render()
     },
-    '$store.state.currentSmallXadvance': function() {
-      console.warn("render",this.$store.state.currentSmallXadvance)
-      this.render(true)
+    '$store.state.currentSmallXadvance': function () {
+      console.warn("render", this.$store.state.currentSmallXadvance)
+      this.render()
     }
   },
   computed: {
-    XadvanceFinal(){
-      if(this.$store.state.currentXadvance) {
+    XadvanceFinal() {
+      if (this.$store.state.currentXadvance) {
         return this.$store.state.currentXadvance
       } else {
         return this.$store.getters.xadvance
       }
     },
-    XadvanceSmallFinal(){
-      if(this.$store.state.currentSmallXadvance) {
+    XadvanceSmallFinal() {
+      if (this.$store.state.currentSmallXadvance) {
         return this.$store.state.currentSmallXadvance
       } else {
         return this.$store.getters.xadvanceSmall
@@ -48,26 +48,11 @@ export default {
       return this.$store.getters.comaParams
     },
     secondSymbolForRender() {
-     return this.$store.getters.secondSymbolXoffsetForCanvas
+      return this.$store.getters.secondSymbolXoffsetForCanvas
     },
     secondSmallSymbolForRender() {
       return this.$store.getters.secondSmallSymbolXoffsetForCanvas
     },
-    /*firstLetterForRender() {
-      let params = {
-        symbol:"", width:0, x:0, y:0, index:0
-      };
-      this.$store.state.textures.forEach((texture, index)=> {
-        if((texture.frame.x === this.$store.state.firstLetterParamsForCorrectingXOffset.x) && ( texture.frame.y === this.$store.state.firstLetterParamsForCorrectingXOffset.y)) {
-          params.symbol = this.$store.state.firstLetterParamsForCorrectingXOffset.symbol
-          params.index = index
-          params.x = texture.frame.x
-          params.y = texture.frame.y
-          params.width = texture.orig.width
-        }
-      })
-      return params
-    },*/
 
   },
   mounted() {
@@ -80,7 +65,7 @@ export default {
     });
     this.$el.appendChild(this.app.view);
     this.app.renderer.view.style.display = "block";
-   // this.app.renderer.autoResize = true;
+    // this.app.renderer.autoResize = true;
     //this.app.renderer.resize(window.innerWidth, window.innerHeight);
     this.parse()
   },
@@ -96,7 +81,6 @@ export default {
             loader.resources[png].texture.baseTexture, atlas
         );
         sheet.parse((...args) => {
-          
           textures = Object.values(args[0])
           this.$store.commit("setTextures", textures)
           this.render(false)
@@ -104,68 +88,36 @@ export default {
       })
     },
 
-    render(useCommaSymbol) {
-      console.warn("render", useCommaSymbol)
-      //this.showRenderButton = false
+    render() {
       this.clearStage();
       this.addCanvasBorder();
-     // this.secondLetterForRender = this.firstLetterForRender
-      let firstSymbol, secondSymbol, thirdSymbol
-      if(this.$store.getters.isDigits) {
-        firstSymbol = this.$store.getters.firstDigitForCanvas
-        secondSymbol = this.$store.getters.secondDigitForCanvas
-        thirdSymbol = this.$store.getters.thirdDigitForCanvas
-        if(useCommaSymbol) {
-          secondSymbol = this.$store.getters.comaForCanvas
-          this.addSymbol(0, 0, secondSymbol.index, true)
-          let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
-          this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
-
-        }else {
-          this.addSymbol(0, 0, firstSymbol.index, true)
-          let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
-          this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
-          this.addSymbol( xStartForThirdLetter + thirdSymbol.xoffset, 0, thirdSymbol.index, true )
-        }
-
-
-      } else {
-        firstSymbol = this.$store.getters.firstLetterForCanvas
-        secondSymbol = this.$store.getters.secondLetterForCanvas
-        thirdSymbol = this.$store.getters.thirdLetterForCanvas
-        this.addSymbol(0, 0, firstSymbol.index, true)
-        let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
-        this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
-        this.addSymbol( xStartForThirdLetter + thirdSymbol.xoffset, 0, thirdSymbol.index, true )
-      }
-
-
-      // if(useCommaSymbol) {
-      //   secondSymbol = this.$store.getters.comaForCanvas
-      //   this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
-      // }
-      // else{
-      //   secondSymbol = this.$store.getters
-      //   let xStartForThirdLetter = firstSymbol.width + secondSymbol.xoffset + secondSymbol.width
-      //   this.addSymbol(firstSymbol.width + secondSymbol.xoffset , 0, secondSymbol.index, true)
-      //   this.addSymbol( xStartForThirdLetter + thirdSymbol.xoffset, 0, thirdSymbol.index, true )
-      // }
+      let currentX = 0;
+      let currentY = 0;
+      let previousSymbolParams = null;
+      this.$store.state.arrSymbolsForPreview.forEach((symbol, i, arr) => {
+          let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
+          if (i !== 0) {
+            previousSymbolParams = this.$store.getters.getSymbolById(arr[i-1]);
+            currentX = currentX + Number(previousSymbolParams.xadvance);
+          }
+          this.addSymbol(currentX, currentY, currentSymbolParams, false)
+      })
     },
 
-     addSymbol(x, y, index, border) {
-      let texture = this.$store.state.textures[index]
+    addSymbol(x, y, currentSymbol, isBorder) {
+      let texture = this.$store.state.textures[currentSymbol.index]
       let spriteContainer = new PIXI.Container()
       let symbolSprite = PIXI.Sprite.from(texture);
       spriteContainer.x = x
       spriteContainer.y = y
+
       let spriteSheetBorder = new PIXI.Graphics();
       spriteSheetBorder.lineStyle(3, 0x000000, 1);
-      spriteSheetBorder.drawRect(0, 0, texture.orig.width, texture.orig.height);
+      spriteSheetBorder.drawRect(0, 0, currentSymbol.xadvance, currentSymbol.height);
       spriteSheetBorder.endFill();
       spriteContainer.addChild(symbolSprite)
-      if(border){
-        spriteContainer.addChild(spriteSheetBorder)
-      }
+      if (isBorder) spriteContainer.addChild(spriteSheetBorder)
+
       this.spritesheetWrapper.addChild(spriteContainer)
     },
 
@@ -181,9 +133,8 @@ export default {
       this.app.stage.addChild(this.spritesheetWrapper);
     },
     clearStage() {
-      console.log("clearStage")
-      if(this.app && this.app.stage.children.length>0){
-        while(this.app.stage.children[0]) {
+      if (this.app && this.app.stage.children.length > 0) {
+        while (this.app.stage.children[0]) {
           this.app.stage.removeChild(this.app.stage.children[0])
         }
       }
