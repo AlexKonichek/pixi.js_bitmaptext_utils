@@ -25,7 +25,7 @@ const store = new Vuex.Store({
     textures:[],
     currentXadvance:null,
     currentSmallXadvance:null,
-    currentSmallYadvance:null,
+    currentSmallYadvance:0,
 
     jsonHasSmallSymbols:false,
     firstLetterForCorrectingXOffset:"U",
@@ -60,7 +60,8 @@ const store = new Vuex.Store({
       return Math.max(...state.arrSmallSymbolsWidth)
     },
     yadvanceSmall:state => {
-      return Math.max(...state.arrSmallSymbolsHeights)
+      //return Math.max(...state.arrSmallSymbolsHeights)
+      return 0
     },
     yadvance:state => {
       return Math.max(...state.arrSymbolsHeights)

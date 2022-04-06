@@ -24,6 +24,10 @@ export default {
     '$store.state.currentSmallXadvance': function () {
       console.warn("render", this.$store.state.currentSmallXadvance)
       this.render()
+    },
+    '$store.state.currentSmallYadvance': function () {
+      console.warn("render", this.$store.state.currentSmallYadvance)
+      this.render()
     }
   },
   computed: {
@@ -92,7 +96,6 @@ export default {
       this.clearStage();
       this.addCanvasBorder();
       let currentX = 0;
-      let currentY = 0;
       let previousSymbolParams = null;
       this.$store.state.arrSymbolsForPreview.forEach((symbol, i, arr) => {
           let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
@@ -100,7 +103,8 @@ export default {
             previousSymbolParams = this.$store.getters.getSymbolById(arr[i-1]);
             currentX = currentX + Number(previousSymbolParams.xadvance);
           }
-          this.addSymbol(currentX, currentY, currentSymbolParams, false)
+
+          this.addSymbol(currentX, currentSymbolParams.yoffset, currentSymbolParams, false)
       })
     },
 

@@ -30,9 +30,8 @@ export default {
       yOffset:null,
       arrSymbolsParams:[],
       xadvanceCurrent:null,
-      yadvanceCurrent:null,
       xOffsetCurrent:null,
-      yOffsetCurrent:null,
+      yOffsetCurrent:0,
     }
   },
  
@@ -43,6 +42,13 @@ export default {
     '$store.state.currentSmallXadvance': function () {
       this.JSON2XML()
     },
+
+    '$store.state.currentSmallYadvance': function () {
+      console.warn(this.$store.state.currentSmallYadvance)
+      this.JSON2XML()
+    },
+
+
     '$store.state.isDataReadyForXMLCreator': function () {
       this.prepareDataForXML()
     }
@@ -107,16 +113,16 @@ export default {
           let symbolHeight = frame.h;
           let x = frame.x;
           let y = frame.y;
+          let yoffset = 0;
 
             //define xadvance for dot,comma or similar small symbol
             //to do add arr of all possibly small symbols and checking if it have a current symbols
             if((this.$store.state.inputSymbolsArr[index] === "," || this.$store.state.inputSymbolsArr[index] === ".")) {
                 this.xadvanceCurrent = this.$store.state.currentSmallXadvance === null ? this.$store.getters.xadvanceSmall: this.$store.state.currentSmallXadvance
                 this.$store.commit("setJSONHasSmallSymbols", true)
-                this.yadvanceCurrent = undefined
+              yoffset = this.$store.state.currentSmallYadvance
                 if(this.$store.state.currentSmallXadvance) {
                   //case when general xadvance is changed
-                  console.log(this.$store.state.currentSmallXadvance)
                   this.xOffsetCurrent = (this.$store.state.currentSmallXadvance - symbolWidth)/2
                 } else {
                   //case when general xadvance not touched(default)
@@ -126,12 +132,10 @@ export default {
                 }
 
               //define xadvance for plain symbols
-              else {
+            else {
               this.xadvanceCurrent = this.$store.state.currentXadvance === null ? this.$store.getters.xadvance : this.$store.state.currentXadvance
-              this.yadvanceCurrent = undefined
                   if(this.$store.state.currentXadvance) {
                     //case when general xadvance is changed
-                    console.log(this.$store.state.currentXadvance)
                     this.xOffsetCurrent = (this.$store.state.currentXadvance - symbolWidth)/2
                   } else {
                     //case when general xadvance not touched(default)
@@ -141,18 +145,18 @@ export default {
 
        // this.xOffsetCurrent = (Number(this.xadvanceCurrent)- symbolWidth) /2
         //this.yOffsetCurrent = (Number(this.yadvanceCurrent)- symbolHeight) /2
-        this.yOffsetCurrent = 0
         if(this.$store.state.inputSymbolsArr[index] === this.$store.state.symbolForCorrectingXOffset){
             this.xoffsetForSymbolCorrectingXAdvance = this.xOffset
         } 
             
-            let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${0}" yoffset="${this.yOffsetCurrent}" xadvance="${this.xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
+            let row = `    <char id="${this.charCodeArr[index]}" x="${x}" y="${y}" width="${symbolWidth}" height="${symbolHeight}" xoffset="${0}" yoffset="${yoffset}" xadvance="${this.xadvanceCurrent}" /><!-- ${this.$store.state.inputSymbolsArr[index]} -->\n`
               this.XMLText += row
 
                let symbolsParams = {
                   index,
                   symbol:this.$store.state.inputSymbolsArr[index],
                   xoffset:this.xOffsetCurrent*2,
+                  yoffset:yoffset,
                   xadvance: this.xadvanceCurrent,
                   width:frame.w,
                   height:frame.h,
