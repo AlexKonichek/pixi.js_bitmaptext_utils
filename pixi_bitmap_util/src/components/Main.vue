@@ -1,10 +1,9 @@
 <template lang="html">
-  <main class="bg-secondary">
+  <main class="bg-secondary h-100">
     <div class="w-100 0">
       <div class="row">
         <div class="col-sm-4 mr-2">
           <SidePanel v-if="showSidePanel"/>
-          <ShowDemo v-if="this.$store.state.showCanvas"/>
         </div>
         <div class="col-sm-8 bg-light ml-3">
           <OpenFile v-if="showOpenFile"
@@ -25,16 +24,16 @@
             <div class="">
 
             </div>
-<!--            <div class="col-sm-6">-->
-<!--              <FinalPreview v-if="this.$store.state.showCanvas"/>-->
-<!--            </div>-->
+
           </div>
-<!--          <div  class="form-check form-switch">-->
-<!--            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">-->
-<!--            <label class="form-check-label" for="flexSwitchCheckDefault">Show XMl</label>-->
-<!--          </div>-->
           <XML_Creator v-if="showXMLCreator"/>
         </div>
+      </div>
+      <div class="row">
+        <div>
+          <ShowDemo v-if="this.$store.state.showCanvas"/>
+        </div>
+
       </div>
     </div>
   </main>
