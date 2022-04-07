@@ -1,66 +1,70 @@
 <template>
   <div class="slidePanel m-2">
-    <div id="RequiredSymbols">
-      <label class="text-white mt-2" for="symbols">Required symbols</label>
-      <div class="input-group input-group-lg mb-2">
-        <input
-            type="text"
-            id="symbols"
-            class="form-control mr-3"
-            v-model="inputSymbols"
-            required
-            placeholder="paste your symbols"
-        >
+    <div v-if="showRequiredSymbolsInput">
+      <div id="RequiredSymbols">
+        <label class="text-white mt-2" for="symbols">Required symbols</label>
+        <div class="input-group input-group-lg mb-2">
+          <input
+              type="text"
+              id="symbols"
+              class="form-control mr-3"
+              v-model="inputSymbols"
+              required
+              placeholder="paste your symbols"
+          >
+        </div>
       </div>
-    </div>
-    <div id="warning">
-      <div v-if="this.$store.state.showInputError" class="alert alert-danger" role="alert">
-        <p><b>Not enough symbols for parsing!</b></p>
-        <p>Should be {{ this.$store.getters.framesArrLength }}</p>
+      <div id="warning">
+        <div v-if="this.$store.state.showInputError" class="alert alert-danger" role="alert">
+          <p><b>Not enough symbols for parsing!</b></p>
+          <p>Should be {{ this.$store.getters.framesArrLength }}</p>
+        </div>
       </div>
-    </div>
-    <div id="ChooseSymbolsSet">
-      <div>
-        <label class="label text-white" for="Select">Choose symbols set</label>
-        <select class="form-control form-control-lg mb-2" id="Select" v-model="inputSymbols"
-                v-on:change="chooseSymbolsHandler">
-          <option :value="this.selectOption1">{{ this.selectOption1 }}</option>
-          <option>{{ this.selectOption2 }}</option>
-        </select>
+      <div id="ChooseSymbolsSet">
+        <div>
+          <label class="label text-white" for="Select">Choose symbols set</label>
+          <select class="form-control form-control-lg mb-2" id="Select" v-model="inputSymbols"
+                  v-on:change="chooseSymbolsHandler">
+            <option :value="this.selectOption1">{{ this.selectOption1 }}</option>
+            <option>{{ this.selectOption2 }}</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div id="generalXadvance">
-      <label class="text-white" for="XAdvance">xadvance for plain symbols</label>
-      <div class="input-group input-group-lg mb-2">
-        <input
-            id="XAdvance"
-            class="form-control mr-3"
-            ref="XAdvance"
-            v-model="maxSymbolWidthModel"
-            step="1"
-            type="number"
-        >
-      </div>
-
     </div>
 
-    <div v-if="this.$store.getters.hasDotSymbol">
-      <label class="text-white" for="XAdvanceSmall">xadvance for "." ","</label>
-      <div class="input-group input-group-lg mb-2">
-        <input
-            id="XAdvanceSmall"
-            class="form-control mr-3"
-            ref="XAdvance"
-            v-model="maxSmallSymbolWidthModel"
-            step="1"
-            type="number"
-        >
+
+    <div v-if="showOffsetsInputs">
+      <div id="generalXadvance">
+        <label class="text-white" for="XAdvance">xadvance for plain symbols</label>
+        <div class="input-group input-group-lg mb-1">
+          <input
+              id="XAdvance"
+              class="form-control mr-3"
+              ref="XAdvance"
+              v-model="maxSymbolWidthModel"
+              step="1"
+              type="number"
+          >
+        </div>
+
       </div>
-    </div>
-    <div v-if="this.$store.getters.hasDotSymbol">
+      <div v-if="this.$store.getters.hasDotSymbol">
+        <label class="text-white" for="XAdvanceSmall">xadvance for "." ","</label>
+        <div class="input-group input-group-lg mb-1">
+          <input
+              id="XAdvanceSmall"
+              class="form-control mr-3"
+              ref="XAdvance"
+              v-model="maxSmallSymbolWidthModel"
+              step="1"
+              type="number"
+          >
+        </div>
+      </div>
+      <div v-if="this.$store.getters.hasDotSymbol">
         <div>
           <label class="text-white" for="YAdvanceSmall">y-axis offsets for "." ","</label>
-          <div class="input-group input-group-lg mb-2">
+          <div class="input-group input-group-lg mb-1">
             <input
                 id="YAdvanceSmall"
                 class="form-control mr-3"
@@ -71,11 +75,11 @@
             >
           </div>
         </div>
-    </div>
-    <div v-if="this.$store.getters.hasMultiplierSymbol">
+      </div>
+      <div v-if="this.$store.getters.hasMultiplierSymbol">
         <div>
           <label class="text-white" for="multiplier">y-axis offsets for "×"</label>
-          <div class="input-group input-group-lg mb-2">
+          <div class="input-group input-group-lg mb-1">
             <input
                 id="multiplier"
                 class="form-control mr-3"
@@ -87,6 +91,7 @@
           </div>
         </div>
 
+      </div>
     </div>
     <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-success m-4" v-on:click="showXMLComponent">
       Create XML
@@ -109,6 +114,8 @@ export default {
       inputSymbols: '',
       selectOption1: ',.×0123456789',
       selectOption2: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      showOffsetsInputs:false,
+      showRequiredSymbolsInput:true
     }
   },
   watch: {
@@ -235,6 +242,8 @@ export default {
       this.$store.commit("setShowCreateXMLButton", true)
     },
     showXMLComponent() {
+      this.showOffsetsInputs = true
+      this.showRequiredSymbolsInput = false
       this.$store.commit("setDataReadyForXMLCreator", true)
       this.$store.commit("setShowCreateXMLButton", false)
       this.$store.commit("setShowFrameNamesOrderMessage", false)
@@ -256,7 +265,7 @@ export default {
 
 <style>
 .slidePanel {
-  overflow: auto;
+  overflow: hidden;
   height: 50vh;
 }
 </style>
