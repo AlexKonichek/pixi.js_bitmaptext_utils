@@ -22,6 +22,8 @@ const store = new Vuex.Store({
     showCreateXMLButton:false,
     showInputError:false,
     showCanvas:false,
+    showInitBorders:false,
+    showBorders:false,
     showFrameNamesOrderMessage:false,
     textures:[],
     currentXadvance:null,
@@ -44,6 +46,9 @@ const store = new Vuex.Store({
 
   },
   getters: {
+    isBordersShowing: (state) => {
+      return state.showBorders;
+    },
     hasDotSymbol: (state) => {
       return state.inputSymbolsArr.includes(".");
     },
@@ -143,7 +148,9 @@ const store = new Vuex.Store({
     setSymbolForCorrectingXOffset:(state, value) => state.firstLetterForCorrectingXOffset = value,
     setShowFrameNamesOrderMessage:(state, value) => state.showFrameNamesOrderMessage = value,
     setSymbolsForPreview:(state, value) => state.arrSymbolsForPreview = value,
-    setXMLText:(state, value) => state.XMLText = value
+    setXMLText:(state, value) => state.XMLText = value,
+    setShowBorders:(state, value) => state.showBorders = value,
+    setShowInitBorders:(state, value) => state.showInitBorders = value
 
   },
   actions: {

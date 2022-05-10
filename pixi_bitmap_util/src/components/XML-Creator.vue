@@ -12,7 +12,6 @@
 </template>
 
 <script>
-//import Preview from "./Preview";
 
 export default {
   name: "XML_Creator",
@@ -51,9 +50,8 @@ export default {
     '$store.state.isDataReadyForXMLCreator': function () {
       this.prepareDataForXML()
     },
-    XMLText: function () {
-      console.warn(this.XMLText)
-    },
+    // XMLText: function () {
+    // },
   },
 
   computed: {
@@ -159,7 +157,7 @@ export default {
                   symbol:this.$store.state.inputSymbolsArr[index],
                   xoffset:this.xOffsetCurrent*2,
                   yoffset:yoffset,
-                  xadvance: this.xadvanceCurrent,
+                  xadvance: Number(this.xadvanceCurrent),
                   width:frame.w,
                   height:frame.h,
                   x:frame.x,

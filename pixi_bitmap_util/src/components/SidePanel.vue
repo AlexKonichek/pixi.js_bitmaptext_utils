@@ -107,6 +107,16 @@
 
         </div>
     </div>
+    <div v-if="this.$store.state.showCanvas" class="form-check">
+      <input type="checkbox" class="form-check-input" id="ShowBorders" v-model="showBorders" />
+      <label class="text-white" for="ShowBorders">Show xadvance borders: {{ showBorders }} </label>
+
+    </div>
+    <div v-if="this.$store.state.showCanvas" class="form-check">
+
+      <input type="checkbox" class="form-check-input" id="showInitBorders" v-model="showInitBorders" />
+      <label class="text-white" for="showInitBorders">Show symbol width borders: {{ showInitBorders }} </label>
+    </div>
     <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-success m-4" v-on:click="showXMLComponent">
       Create XML
     </button>
@@ -132,7 +142,8 @@ export default {
       showRequiredSymbolsInput:true,
       showPreviewSymbolsForm: false,
       showBtn: false,
-      showWarning:false
+      showWarning:false,
+
     }
   },
   watch: {
@@ -169,7 +180,6 @@ export default {
       return this.$store.getters.initialYoffset
     },
 
-
     maxSmallSymbolWidthModel: {
       set(value) {
         this.$store.commit('updateCurrentSmallXadvance', value)
@@ -192,6 +202,22 @@ export default {
       },
       get() {
         return this.$store.state.currentMultiplierYoffset !== null ? this.$store.state.currentMultiplierYoffset : this.initialYoffset
+      }
+    },
+    showBorders: {
+      get() {
+        return this.$store.state.showBorders
+      },
+      set(value) {
+        this.$store.commit('setShowBorders', value)
+      }
+    },
+    showInitBorders:{
+      get() {
+        return this.$store.state.showInitBorders
+      },
+      set(value) {
+        this.$store.commit('setShowInitBorders', value)
       }
     },
 
@@ -218,7 +244,6 @@ export default {
       }
     },
     parseJSON() {
-      console.warn("parseJSON");
       let arrSmallSymbolsWidth = [];
       let arrSymbolsWidths = [];
       let arrSymbolsHeights = [];
@@ -278,15 +303,17 @@ export default {
     },
     chooseSymbolsSetForPreview(e) {
       this.showWarning = false;
-      this.showBtn = false
+      //this.showBtn = false
       if(e.target.value !== "") {
           let symbols = [...e.target.value]
           if (!this.$store.state.inputSymbolsArr.includes(symbols[symbols.length-1])){
             this.showWarning = true
-            this.showBtn = false
+            this.$store.commit(("setShowCanvas"),false);
+            //this.showBtn = false
           } else {
             this.$store.commit("setSymbolsForPreview", [...e.target.value])
-            this.showBtn = true
+            this.$store.commit(("setShowCanvas"),true);
+            //this.showBtn = true
           }
 
 

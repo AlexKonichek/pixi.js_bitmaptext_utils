@@ -12,7 +12,6 @@ export default {
       canvasWidths:300,
       canvasHeight:300,
       spritesheetWrapper:null,
-
     };
   },
   watch: {
@@ -30,10 +29,9 @@ export default {
   //   },
   // },
   computed: {
-      isDigits(){
-          return this.$store.state.jsonHasSmallSymbols
-      }
-
+    isDigits(){
+      return this.$store.state.jsonHasSmallSymbols
+    }
   },
   mounted() {
     this.app = new PIXI.Application({
@@ -44,18 +42,18 @@ export default {
     });
     this.$el.appendChild(this.app.view);
     this.app.renderer.view.style.display = "block";
-   // this.app.renderer.autoResize = true;
+    // this.app.renderer.autoResize = true;
     //this.app.renderer.resize(window.innerWidth, window.innerHeight);
-    
+
   },
   methods: {
-    
+
     render(useCommaSymbol) {
       console.warn("render")
       //this.showRenderButton = false
       this.clearStage();
       this.addCanvasBorder();
-      
+
       this.addSymbol(0, 0, this.firstSymbolForRender.index, false)
       if(useCommaSymbol) {
         this.addSymbol(this.firstSymbolForRender.width + this.comaSymbol.xoffset, 0, this.comaSymbol.index, false)
@@ -63,8 +61,7 @@ export default {
         this.addSymbol(this.firstSymbolForRender.width + this.$store.getters.secondSymbolXoffsetForCanvas.xoffset , 0, this.firstSymbolForRender.index, false)
       }
     },
-
-     addSymbol(x, y, index, border) {
+    addSymbol(x, y, index, border) {
       let texture = this.$store.state.textures[index]
       let spriteContainer = new PIXI.Container()
       let symbolSprite = PIXI.Sprite.from(texture);
@@ -80,7 +77,6 @@ export default {
       }
       this.spritesheetWrapper.addChild(spriteContainer)
     },
-
     addCanvasBorder() {
       this.spritesheetWrapper = new PIXI.Container()
       this.spriteSheetBorder = new PIXI.Graphics();

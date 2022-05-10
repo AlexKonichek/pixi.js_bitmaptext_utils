@@ -18,6 +18,9 @@ export default {
     };
   },
   watch: {
+    '$store.state.arrSymbolsParams': function () {
+
+    },
     '$store.state.currentXadvance': function () {
       this.render()
     },
@@ -28,6 +31,12 @@ export default {
       this.render()
     },
     '$store.state.currentMultiplierYoffset': function () {
+      this.render()
+    },
+    '$store.state.showBorders': function () {
+      this.render()
+    },
+    '$store.state.showInitBorders': function () {
       this.render()
     },
     '$store.state.arrSymbolsForPreview': function () {
@@ -51,7 +60,6 @@ export default {
   },
   methods: {
     parse() {
-      console.warn("parse")
       let atlas = JSON.parse(this.$store.state.loadedJSON)
       let loader = this.app.loader;
       let png = this.$store.state.loadedPNG
@@ -73,33 +81,54 @@ export default {
       this.addCanvasBorder();
       this.arrForPreview = this.$store.state.arrSymbolsForPreview
       let currentX = 0;
+      let initialX = 0;
       let previousSymbolParams = null;
       this.arrForPreview.forEach((symbol, i, arr) => {
-          let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
-          if (i !== 0) {
-            previousSymbolParams = this.$store.getters.getSymbolById(arr[i-1]);
-            currentX = currentX + Number(previousSymbolParams.xadvance);
-          }
 
-          this.addSymbol(currentX, currentSymbolParams.yoffset, currentSymbolParams, false)
+          let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
+          let xoffset = (currentSymbolParams.width - currentSymbolParams.xadvance) / 2
+          currentX = currentX - xoffset
+
+
+          if (i !== 0) {
+              initialX = initialX + currentSymbolParams.width
+              previousSymbolParams = this.$store.getters.getSymbolById(arr[i-1]);
+              let previousSymbolXoffset = (previousSymbolParams.width - previousSymbolParams.xadvance)/2
+              let currentSymbolXoffset = (currentSymbolParams.width - currentSymbolParams.xadvance)/2
+              let previousX = currentX
+              currentX = previousX + previousSymbolXoffset + previousSymbolParams.xadvance;
+            console.log(currentSymbolXoffset,currentX)
+            }
+          let bordersShowing = this.$store.state.showBorders
+          let bordersInitShowing = this.$store.state.showInitBorders
+          this.addSymbol(currentX, currentSymbolParams.yoffset, currentSymbolParams,xoffset, bordersShowing, bordersInitShowing )
       })
     },
 
-    addSymbol(x, y, currentSymbol, isBorder) {
+    addSymbol(x, y, currentSymbol, xoffset, isBorder, isInitBorder) {
       let texture = this.$store.state.textures[currentSymbol.index]
-      let spriteContainer = new PIXI.Container()
       let symbolSprite = PIXI.Sprite.from(texture);
-      spriteContainer.x = x
-      spriteContainer.y = y
+      symbolSprite.x = x
+      symbolSprite.y = y
+      //add initial border
+      let spriteSheetBorderInitial = new PIXI.Graphics();
+      spriteSheetBorderInitial.lineStyle(2, 0x000000, 1);
+      spriteSheetBorderInitial.drawRect(x, 0, currentSymbol.width, currentSymbol.height);
+      spriteSheetBorderInitial.endFill();
 
+      //add current border
       let spriteSheetBorder = new PIXI.Graphics();
-      spriteSheetBorder.lineStyle(3, 0x000000, 1);
-      spriteSheetBorder.drawRect(0, 0, currentSymbol.xadvance, currentSymbol.height);
+      spriteSheetBorder.lineStyle(4, 0xFF0000, 1);
+      spriteSheetBorder.drawRect(x + xoffset, 0, currentSymbol.xadvance, currentSymbol.height);
       spriteSheetBorder.endFill();
-      spriteContainer.addChild(symbolSprite)
-      if (isBorder) spriteContainer.addChild(spriteSheetBorder)
+      if (isBorder) {
+        this.spritesheetWrapper.addChild(spriteSheetBorder)
+      }
+      if (isInitBorder) {
+        this.spritesheetWrapper.addChild(spriteSheetBorderInitial)
+      }
+      this.spritesheetWrapper.addChild(symbolSprite)
 
-      this.spritesheetWrapper.addChild(spriteContainer)
     },
 
     addCanvasBorder() {
@@ -110,7 +139,7 @@ export default {
       this.spriteSheetBorder.endFill();
       this.spriteSheetBorder.x = 0;
       this.spriteSheetBorder.y = 0;
-      //this.spritesheetWrapper.addChild(this.spriteSheetBorder)
+      this.spritesheetWrapper.addChild(this.spriteSheetBorder)
       this.app.stage.addChild(this.spritesheetWrapper);
     },
     clearStage() {
