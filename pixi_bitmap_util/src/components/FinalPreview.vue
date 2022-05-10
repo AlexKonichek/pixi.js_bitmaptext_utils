@@ -16,8 +16,19 @@ export default {
     };
   },
   watch: {
-
+    '$store.state.currentXadvance': function () {
+      console.log(this.$store.state.arrSymbolsForPreview)
+    },
+    '$store.state.arrSymbolsForPreview': function() {
+      console.log(this.$store.state.arrSymbolsForPreview)
+    }
   },
+  // watch: {
+  //   '$store.state.arrSymbolsForPreview': function () {
+  //     console.warn(this.$store.getters.isDigits);
+  //     this.render(this.$store.getters.isDigits)
+  //   },
+  // },
   computed: {
       isDigits(){
           return this.$store.state.jsonHasSmallSymbols

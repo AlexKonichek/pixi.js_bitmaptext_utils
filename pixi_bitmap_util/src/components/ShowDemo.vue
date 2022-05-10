@@ -29,7 +29,10 @@ export default {
     },
     '$store.state.currentMultiplierYoffset': function () {
       this.render()
-    }
+    },
+    '$store.state.arrSymbolsForPreview': function () {
+          this.render(this.$store.getters.isDigits)
+        },
 
   },
   mounted() {
@@ -68,11 +71,7 @@ export default {
     render() {
       this.clearStage();
       this.addCanvasBorder();
-      if(this.$store.getters.hasDotSymbol) {
-        this.arrForPreview = this.$store.state.arrSymbolsForPreview
-      } else {
-        this.arrForPreview = ["U","S","D"]
-      }
+      this.arrForPreview = this.$store.state.arrSymbolsForPreview
       let currentX = 0;
       let previousSymbolParams = null;
       this.arrForPreview.forEach((symbol, i, arr) => {

@@ -6,7 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     arrSymbolsWidths:[],
-    arrSymbolsForPreview:["0",",","0",".","0","×"],
+    arrSymbolsForPreview:["0","0","0","×"],
     arrSymbolsHeights:[],
     arrSmallSymbolsWidth:[],
     arrSmallSymbolsHeights:[],
@@ -40,13 +40,8 @@ const store = new Vuex.Store({
     thirdDigitForCorrectingXOffset:"0",
 
     symbolForCorrectingXOffsetSmall:",",
+    XMLText:""
 
-    // firstLetterParamsForCorrectingXOffset:{
-    //   symbol:"U",
-    //   width:0,
-    //   x:0,
-    //   y:0
-    // },
   },
   getters: {
     hasDotSymbol: (state) => {
@@ -72,6 +67,9 @@ const store = new Vuex.Store({
     },
     yadvanceSmall:state => {
       //return Math.max(...state.arrSmallSymbolsHeights)
+      return 0
+    },
+    initialYoffset:state => {
       return 0
     },
     yadvance:state => {
@@ -102,7 +100,7 @@ const store = new Vuex.Store({
       return Math.max(...state.arrSymbolsWidths) * 12
     },
     canvasHeight: state => {
-      return Math.max(...state.arrSymbolsHeights)
+      return Math.max(...state.arrSymbolsHeights) * 1.3
     },
     isDigits:state => {
       return state.inputSymbolsArr.includes(",")
@@ -144,6 +142,8 @@ const store = new Vuex.Store({
     setArrSymbolsParams:(state, value) => state.arrSymbolsParams = value,
     setSymbolForCorrectingXOffset:(state, value) => state.firstLetterForCorrectingXOffset = value,
     setShowFrameNamesOrderMessage:(state, value) => state.showFrameNamesOrderMessage = value,
+    setSymbolsForPreview:(state, value) => state.arrSymbolsForPreview = value,
+    setXMLText:(state, value) => state.XMLText = value
 
   },
   actions: {

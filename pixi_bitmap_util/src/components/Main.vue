@@ -1,6 +1,5 @@
-<template lang="html">
-
-  <main>
+<template>
+  <div class="h-100">
     <div class="h-100 d-flex flex-column">
       <div class="row flex-grow-1 bg-secondary">
         <div class="col-lg-3 mr-3 bg-secondary">
@@ -21,7 +20,7 @@
             </ul>
           </div>
           <div class="row">
-            <div class="h-50">
+            <div class="h-75">
               <XML_Creator v-if="showXMLCreator"/>
             </div>
           </div>
@@ -35,7 +34,7 @@
       </div>
     </div>
 
-  </main>
+  </div>
 </template>
 <script>
 
@@ -247,8 +246,8 @@ export default {
 .height25 {
   height: 25vh;
 }
-main
-  ul {
+
+ul {
     list-style: none;
   }
 </style>

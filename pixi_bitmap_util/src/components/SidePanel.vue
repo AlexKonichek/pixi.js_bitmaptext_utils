@@ -32,7 +32,6 @@
       </div>
     </div>
 
-
     <div v-if="showOffsetsInputs">
       <div id="generalXadvance">
         <label class="text-white" for="XAdvance">xadvance for plain symbols</label>
@@ -63,7 +62,7 @@
       </div>
       <div v-if="this.$store.getters.hasDotSymbol">
         <div>
-          <label class="text-white" for="YAdvanceSmall">y-axis offsets for "." ","</label>
+          <label class="text-white" for="YAdvanceSmall">y offsets for "." ","</label>
           <div class="input-group input-group-lg mb-1">
             <input
                 id="YAdvanceSmall"
@@ -78,12 +77,11 @@
       </div>
       <div v-if="this.$store.getters.hasMultiplierSymbol">
         <div>
-          <label class="text-white" for="multiplier">y-axis offsets for "×"</label>
+          <label class="text-white" for="multiplier">y offsets for "×"</label>
           <div class="input-group input-group-lg mb-1">
             <input
                 id="multiplier"
                 class="form-control mr-3"
-                ref="XAdvance"
                 v-model="maxMultiplierSymbolHeightModel"
                 step="1"
                 type="number"
@@ -93,10 +91,26 @@
 
       </div>
     </div>
+    <div v-if="this.$store.state.isDataReadyForXMLCreator" id="symbols_preview">
+      <label class="text-white mt-2" for="symbols">symbols for preview</label>
+      <div class="input-group input-group-lg mb-2">
+        <input v-on:input="chooseSymbolsSetForPreview"
+            type="text"
+            id="preview"
+            class="form-control mr-3"
+            required
+            placeholder="tap symbols for preview"
+        >
+      </div>
+      <div v-if="showWarning" class="alert alert-danger" role="alert">
+          <p><b>You can input only those symbols which are in required symbols form!</b></p>
+
+        </div>
+    </div>
     <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-success m-4" v-on:click="showXMLComponent">
       Create XML
     </button>
-    <div id="CanvasButton" v-if="this.$store.state.isDataReadyForXMLCreator">
+    <div id="CanvasButton" v-if="showBtn">
       <button class="btn btn-success m-3" v-on:click="showCanvas">Show Demo</button>
     </div>
 
@@ -115,7 +129,10 @@ export default {
       selectOption1: ',.×0123456789',
       selectOption2: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
       showOffsetsInputs:false,
-      showRequiredSymbolsInput:true
+      showRequiredSymbolsInput:true,
+      showPreviewSymbolsForm: false,
+      showBtn: false,
+      showWarning:false
     }
   },
   watch: {
@@ -148,6 +165,9 @@ export default {
     initialYadvanceSmall() {
       return this.$store.getters.yadvanceSmall
     },
+    initialYoffset() {
+      return this.$store.getters.initialYoffset
+    },
 
 
     maxSmallSymbolWidthModel: {
@@ -171,7 +191,7 @@ export default {
         this.$store.commit('updateCurrentMultiplierYoffset', value)
       },
       get() {
-        return this.$store.state.currentSmallYadvance !== null ? this.$store.state.currentSmallYadvance : this.initialYadvanceSmall
+        return this.$store.state.currentMultiplierYoffset !== null ? this.$store.state.currentMultiplierYoffset : this.initialYoffset
       }
     },
 
@@ -252,7 +272,32 @@ export default {
       console.log(e)
     },
     showCanvas() {
-      this.$store.commit("setShowCanvas", true)
+      this.$store.commit(("setShowCanvas"),true);
+      this.showBtn = false
+      //this.chooseSymbolsSetForPreview()
+    },
+    chooseSymbolsSetForPreview(e) {
+      this.showWarning = false;
+      this.showBtn = false
+      if(e.target.value !== "") {
+          let symbols = [...e.target.value]
+          if (!this.$store.state.inputSymbolsArr.includes(symbols[symbols.length-1])){
+            this.showWarning = true
+            this.showBtn = false
+          } else {
+            this.$store.commit("setSymbolsForPreview", [...e.target.value])
+            this.showBtn = true
+          }
+
+
+      }
+      else {
+        this.$store.commit("setSymbolsForPreview", [...e.target.value])
+      }
+
+
+
+      //this.$store.commit("setShowCanvas", true)
 
     },
     refreshPage() {
@@ -266,6 +311,6 @@ export default {
 <style>
 .slidePanel {
   overflow: hidden;
-  height: 50vh;
+  height: 65vh;
 }
 </style>

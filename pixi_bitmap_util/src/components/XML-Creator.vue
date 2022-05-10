@@ -3,7 +3,7 @@
     <div class="XML m-3">
       <div class="xml-area">
         <div class="form-group">
-          <textarea class="form-control" id="XML" v-model="XMLText" rows="13" cols="50"></textarea>
+          <textarea class="form-control" id="XML" v-model="XMLText" rows="33" cols="50"></textarea>
           <button class="btn btn-success m-3"  v-on:click="this.downloadXML">Save XML</button>
         </div>
       </div>
@@ -48,12 +48,12 @@ export default {
     '$store.state.currentMultiplierYoffset': function () {
       this.JSON2XML()
     },
-
-
-
     '$store.state.isDataReadyForXMLCreator': function () {
       this.prepareDataForXML()
-    }
+    },
+    XMLText: function () {
+      console.warn(this.XMLText)
+    },
   },
 
   computed: {
@@ -75,7 +75,7 @@ export default {
     },
 
     downloadXML() {
-      let xmltext = this.XMLText;
+      let xmltext = this.$store.state.XMLText;
       let name = this.XMLFileName.split('.')[0]
       let filename = `${name}.xml`;
       let pom = document.createElement('a');
@@ -94,12 +94,9 @@ export default {
         this.charCodeArr.push(symbol.charCodeAt(0))
       })
     },
-    showPreview(){
-      this.showPreviewComponent = true
-    },
-
     JSON2XML() {
       this.arrSymbolsParams = []
+
       //first part of XML file
       this.XMLText = `
 <font>
@@ -122,7 +119,6 @@ export default {
            }
 
           //define xadvance for dot,comma or similar small symbol
-            //to do add arr of all possibly small symbols and checking if it have a current symbols
             if((this.$store.state.inputSymbolsArr[index] === "," || this.$store.state.inputSymbolsArr[index] === ".")) {
                 this.xadvanceCurrent = this.$store.state.currentSmallXadvance === null ? this.$store.getters.xadvanceSmall: this.$store.state.currentSmallXadvance
                 this.$store.commit("setJSONHasSmallSymbols", true)
@@ -180,7 +176,10 @@ export default {
         <kernings count="0">
         </kernings>
         </font>`
-      this.$store.commit("setArrSymbolsParams", this.arrSymbolsParams)  
+      this.$store.commit("setArrSymbolsParams", this.arrSymbolsParams);
+      this.$store.commit("setXMLText", this.XMLText);
+
+
     } 
   },
   mounted() {
@@ -190,9 +189,7 @@ export default {
 
 </script>
 <style>
-.xml-area {
 
-}
 .XML {
   overflow: auto;
   height: 60vh;
