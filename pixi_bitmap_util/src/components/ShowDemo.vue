@@ -80,8 +80,8 @@ export default {
       this.clearStage();
       this.addCanvasBorder();
       this.arrForPreview = this.$store.state.arrSymbolsForPreview
-      let currentX = 0;
-      let initialX = 0;
+      let currentX = 100;
+      let initialX = 100;
       let previousSymbolParams = null;
       this.arrForPreview.forEach((symbol, i, arr) => {
 
@@ -97,7 +97,7 @@ export default {
               let currentSymbolXoffset = (currentSymbolParams.width - currentSymbolParams.xadvance)/2
               let previousX = currentX
               currentX = previousX + previousSymbolXoffset + previousSymbolParams.xadvance;
-            console.log(currentSymbolXoffset,currentX)
+
             }
           let bordersShowing = this.$store.state.showBorders
           let bordersInitShowing = this.$store.state.showInitBorders

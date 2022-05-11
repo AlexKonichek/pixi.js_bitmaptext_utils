@@ -107,15 +107,14 @@
 
         </div>
     </div>
-    <div v-if="this.$store.state.showCanvas" class="form-check">
+    <div v-if="this.$store.state.showCanvas" class="form-check m-3">
       <input type="checkbox" class="form-check-input" id="ShowBorders" v-model="showBorders" />
-      <label class="text-white" for="ShowBorders">Show xadvance borders: {{ showBorders }} </label>
+      <label class="xadvanceBorders" :class="{red:showBorders}" for="ShowBorders">Show xadvance borders</label>
 
     </div>
-    <div v-if="this.$store.state.showCanvas" class="form-check">
-
+    <div v-if="this.$store.state.showCanvas" class="form-check m-3">
       <input type="checkbox" class="form-check-input" id="showInitBorders" v-model="showInitBorders" />
-      <label class="text-white" for="showInitBorders">Show symbol width borders: {{ showInitBorders }} </label>
+      <label class="xadvanceBorders" :class="{black:showInitBorders}"  for="showInitBorders">Show width borders</label>
     </div>
     <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-success m-4" v-on:click="showXMLComponent">
       Create XML
@@ -340,4 +339,14 @@ export default {
   overflow: hidden;
   height: 65vh;
 }
+.xadvanceBorders {
+  text-align: left;
+  font-size: 2vh;
+  font-weight: bold;
+  color: aliceblue;
+}
+.red{
+  color: red;
+}
+.black{color: black}
 </style>

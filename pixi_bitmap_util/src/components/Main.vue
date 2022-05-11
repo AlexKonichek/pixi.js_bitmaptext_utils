@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="row flex-grow-1">
-        <div class="m-lg-3">
+        <div class="bg-secondary">
           <ShowDemo v-if="this.$store.state.showCanvas"/>
         </div>
       </div>
