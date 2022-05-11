@@ -5,7 +5,7 @@
         <div class="col-lg-3 mr-3 bg-secondary">
           <SidePanel v-show="showSidePanel"/>
         </div>
-        <div class="col-lg-9 ml-3">
+        <div class="col-lg-6 ml-3">
           <OpenFile v-if="showOpenFile"
                     @json="loadedJSON = $event"
                     @image="loadedPNG = $event"
@@ -26,6 +26,9 @@
             </div>
           </div>
 
+        </div>
+        <div class="col-lg-3 ml-3">
+          <button class="btn btn-success m-3" v-if="this.$store.state.isDataReadyForXMLCreator"  v-on:click="this.downloadXML">Download XML</button>
         </div>
       </div>
       <div class="row flex-grow-1">
@@ -215,8 +218,8 @@ export default {
     },
 
    
-    CreateXML() {
-     
+    downloadXML() {
+     this.$store.commit("setDownloadXMl", true)
     },
   
      isAllReady() {

@@ -42,7 +42,8 @@ const store = new Vuex.Store({
     thirdDigitForCorrectingXOffset:"0",
 
     symbolForCorrectingXOffsetSmall:",",
-    XMLText:""
+    XMLText:"",
+    downloadXMl: false
 
   },
   getters: {
@@ -150,7 +151,8 @@ const store = new Vuex.Store({
     setSymbolsForPreview:(state, value) => state.arrSymbolsForPreview = value,
     setXMLText:(state, value) => state.XMLText = value,
     setShowBorders:(state, value) => state.showBorders = value,
-    setShowInitBorders:(state, value) => state.showInitBorders = value
+    setShowInitBorders:(state, value) => state.showInitBorders = value,
+    setDownloadXMl:(state, value) => state.downloadXMl = value,
 
   },
   actions: {

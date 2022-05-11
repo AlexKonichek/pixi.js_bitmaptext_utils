@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div style="height: 75vh">
     <div class="XML m-3">
       <div class="xml-area">
         <div class="form-group">
-          <textarea class="form-control" id="XML" v-model="XMLText" rows="33" cols="50"></textarea>
-          <button class="btn btn-success m-3"  v-on:click="this.downloadXML">Save XML</button>
+          <textarea class="form-control XML" id="XML" v-model="XMLText" rows="33" cols="50"></textarea>
         </div>
       </div>
     </div>
@@ -49,6 +48,10 @@ export default {
     },
     '$store.state.isDataReadyForXMLCreator': function () {
       this.prepareDataForXML()
+    },
+    '$store.state.downloadXMl': function () {
+      if(this.$store.state.downloadXMl) this.downloadXML();
+      this.$store.commit("setDownloadXMl", false)
     },
     // XMLText: function () {
     // },
@@ -189,7 +192,7 @@ export default {
 <style>
 
 .XML {
-  overflow: auto;
-  height: 60vh;
+  overflow: hidden;
+  //height: 60vh;
 }
 </style>

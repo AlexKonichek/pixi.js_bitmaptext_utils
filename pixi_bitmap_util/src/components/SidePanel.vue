@@ -31,7 +31,6 @@
         </div>
       </div>
     </div>
-
     <div v-if="showOffsetsInputs">
       <div id="generalXadvance">
         <label class="text-white" for="XAdvance">xadvance for plain symbols</label>
@@ -107,15 +106,18 @@
 
         </div>
     </div>
-    <div v-if="this.$store.state.showCanvas" class="form-check m-3">
-      <input type="checkbox" class="form-check-input" id="ShowBorders" v-model="showBorders" />
-      <label class="xadvanceBorders" :class="{red:showBorders}" for="ShowBorders">Show xadvance borders</label>
+    <div class="checkbox" v-if="this.$store.state.showCanvas">
+      <div class="form-check m-3">
+        <input type="checkbox" class="form-check-input" id="ShowBorders" v-model="showBorders" />
+        <label class="xadvanceBorders form-check-label" :class="{red:showBorders}" for="ShowBorders">Show xadvance borders</label>
 
+      </div>
+      <div class="form-check m-3">
+        <input type="checkbox" class="form-check-input" id="showInitBorders" v-model="showInitBorders" />
+        <label class="form-check-label xadvanceBorders" :class="{black:showInitBorders}"  for="showInitBorders">Show width borders</label>
+      </div>
     </div>
-    <div v-if="this.$store.state.showCanvas" class="form-check m-3">
-      <input type="checkbox" class="form-check-input" id="showInitBorders" v-model="showInitBorders" />
-      <label class="xadvanceBorders" :class="{black:showInitBorders}"  for="showInitBorders">Show width borders</label>
-    </div>
+
     <button v-if="this.$store.state.showCreateXMLButton" class="btn btn-success m-4" v-on:click="showXMLComponent">
       Create XML
     </button>
@@ -349,4 +351,8 @@ export default {
   color: red;
 }
 .black{color: black}
+.checkbox {
+  width: 10vw
+}
+
 </style>
