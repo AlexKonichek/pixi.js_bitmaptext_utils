@@ -79,16 +79,15 @@ export default {
     render() {
       this.clearStage();
       this.addCanvasBorder();
-      this.arrForPreview = this.$store.state.arrSymbolsForPreview
-      let currentX = 100;
-      let initialX = 100;
+      console.warn( this.arrForPreview)
+      let currentX = 0;
+      let initialX = 0;
       let previousSymbolParams = null;
-      this.arrForPreview.forEach((symbol, i, arr) => {
+      this.$store.state.arrSymbolsForPreview.forEach((symbol, i, arr) => {
 
-          let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
+           let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
           let xoffset = (currentSymbolParams.width - currentSymbolParams.xadvance) / 2
-          currentX = currentX - xoffset
-
+          //currentX = currentX - xoffset
 
           if (i !== 0) {
               initialX = initialX + currentSymbolParams.width
@@ -96,7 +95,8 @@ export default {
               let previousSymbolXoffset = (previousSymbolParams.width - previousSymbolParams.xadvance)/2
               let currentSymbolXoffset = (currentSymbolParams.width - currentSymbolParams.xadvance)/2
               let previousX = currentX
-              currentX = previousX + previousSymbolXoffset + previousSymbolParams.xadvance;
+              //currentX = previousX + previousSymbolXoffset + previousSymbolParams.xadvance;
+            currentX = currentX + previousSymbolParams.xadvance;
 
             }
           let bordersShowing = this.$store.state.showBorders
@@ -107,14 +107,24 @@ export default {
 
     addSymbol(x, y, currentSymbol, xoffset, isBorder, isInitBorder) {
       let texture = this.$store.state.textures[currentSymbol.index]
-      let symbolSprite = PIXI.Sprite.from(texture);
-      symbolSprite.x = x
-      symbolSprite.y = y
-      //add initial border
-      let spriteSheetBorderInitial = new PIXI.Graphics();
-      spriteSheetBorderInitial.lineStyle(2, 0x000000, 1);
-      spriteSheetBorderInitial.drawRect(x, 0, currentSymbol.width, currentSymbol.height);
-      spriteSheetBorderInitial.endFill();
+      if(currentSymbol.symbol === " ") {
+        let graphic = new PIXI.Graphics();
+        graphic.lineStyle(2, 0x000000, 1);
+        graphic.drawRect(x, 0, currentSymbol.width, 178);
+        graphic.endFill();
+        texture = this.app.renderer.generateTexture(graphic);
+      }
+
+        let symbolSprite = PIXI.Sprite.from(texture);
+        symbolSprite.x = x
+        symbolSprite.y = y
+        //add initial border
+        let spriteSheetBorderInitial = new PIXI.Graphics();
+        spriteSheetBorderInitial.lineStyle(2, 0x000000, 1);
+        spriteSheetBorderInitial.drawRect(x, 0, currentSymbol.width, currentSymbol.height);
+        spriteSheetBorderInitial.endFill();
+
+
 
       //add current border
       let spriteSheetBorder = new PIXI.Graphics();

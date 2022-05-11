@@ -62,7 +62,7 @@ export default {
       return Math.trunc(Math.max(...this.$store.state.arrSymbolsWidths)* 0.25)
     },
     xadvanceForTabSymbol() {
-      return Math.trunc(Math.max(...this.$store.state.arrSymbolsWidths )* 0.7)
+      return Math.trunc(Math.max(...this.$store.state.arrSymbolsWidths)* 0.7)
     }
   },
   methods: {
@@ -157,6 +157,7 @@ export default {
 
                let symbolsParams = {
                   index,
+                  charId:this.charCodeArr[index],
                   symbol:this.$store.state.inputSymbolsArr[index],
                   xoffset:this.xOffsetCurrent*2,
                   yoffset:yoffset,
@@ -177,6 +178,38 @@ export default {
         <kernings count="0">
         </kernings>
         </font>`
+
+      let spaceSymbolsParams = {
+        symbol: " ",
+        index: 27,
+        charId:"32",
+        xoffset:0,
+        yoffset:0,
+        xadvance: Number(this.xadvanceForTabSymbol),
+        width:Number(this.xadvanceForTabSymbol),
+        height:0,
+        x:0,
+        y:0
+      }
+      let tabSymbolsParams = {
+        symbol: "   ",
+        index: 28,
+        charId:"9",
+        xoffset:0,
+        yoffset:0,
+        xadvance: Number(this.xadvanceForSpaceSymbol),
+        width:Number(this.xadvanceForSpaceSymbol),
+        height:0,
+        x:0,
+        y:0
+      }
+
+      this.arrSymbolsParams.push(spaceSymbolsParams)
+      this.arrSymbolsParams.push(tabSymbolsParams)
+
+
+
+
       this.$store.commit("setArrSymbolsParams", this.arrSymbolsParams);
       this.$store.commit("setXMLText", this.XMLText);
 

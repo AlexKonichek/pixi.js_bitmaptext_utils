@@ -307,17 +307,17 @@ export default {
       //this.showBtn = false
       if(e.target.value !== "") {
           let symbols = [...e.target.value]
-          if (!this.$store.state.inputSymbolsArr.includes(symbols[symbols.length-1])){
-            this.showWarning = true
-            this.$store.commit(("setShowCanvas"),false);
-            //this.showBtn = false
-          } else {
-            this.$store.commit("setSymbolsForPreview", [...e.target.value])
-            this.$store.commit(("setShowCanvas"),true);
-            //this.showBtn = true
-          }
-
-
+          symbols.forEach(symbol => {
+            const inputElement = (obj) => obj.symbol === symbol;
+            if (this.$store.state.arrSymbolsParams.find(inputElement) == -1) {
+                this.showWarning = true
+                this.$store.commit(("setShowCanvas"),false);
+            }
+            else {
+                this.$store.commit("setSymbolsForPreview", [...e.target.value])
+                this.$store.commit(("setShowCanvas"),true);
+            }
+          })
       }
       else {
         this.$store.commit("setSymbolsForPreview", [...e.target.value])
