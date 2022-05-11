@@ -12,10 +12,11 @@
                     @getImgUrl="imgUrl = $event"
           ></OpenFile>
           <div v-if="this.$store.state.showFrameNamesOrderMessage">
+            <h1 class="text-warning"><b>Current version working only with NOT trimmed symbols sprites!</b></h1>
             <h2><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
             <ul>
-              <li v-for="(symbol, index) in symbols" :key="symbol">
-                <b>{{index}} - {{symbol}}</b>
+              <li v-for="(symbol) in symbols" :key="symbol">
+                <b>{{symbol}}</b>
               </li>
             </ul>
           </div>
