@@ -12,7 +12,7 @@
                     @getImgUrl="imgUrl = $event"
           ></OpenFile>
           <div v-if="this.$store.state.showFrameNamesOrderMessage">
-            <h1 class="text-warning"><b>Current version working only with NOT trimmed symbols sprites!</b></h1>
+            <h1 class="text-warning" v-if="showTrimmedWarning"><b>Current version working only with NOT trimmed symbols sprites! Choose another one sprite for correct result!</b></h1>
             <h2><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
             <ul>
               <li v-for="(symbol) in symbols" :key="symbol">
@@ -69,6 +69,7 @@ export default {
       finalXAdvance:null,
       font: 'font family',
       comaOrDotExist: false,
+      showTrimmedWarning:false,
       showLetterSpacing: false,
       checkedLetterSpasing: false,
       checkedSpriteBorder: false,
@@ -135,6 +136,7 @@ export default {
     },
     '$store.state.loadedJSON': function () {
       this.showOpenFile = false
+      this.checkTrimmedSprite()
       this.createShowFrameNameOrderList()
       this.showImagePreview = true
       this.showSidePanel = true
@@ -178,15 +180,26 @@ export default {
 
   },
   methods: {
+
      getSymbolsOrder(){
          let data = JSON.parse(this.$store.state.loadedJSON)
          this.$store.commit("setJSONData", data)
          let frames = Object.values(data)[0]
+         if(!this.checkTrimmedSprite(Object.values(frames))) {
+           this.showTrimmedWarning = true
+
+         }
          this.symbols = Object.keys(frames).map(key => {return key.split(".")[0];})
         
      },
+    checkTrimmedSprite(framesArr) {
+       if(framesArr) {
+         //check if all elements widhts is equal
+         return framesArr.every( item => item.frame.w === framesArr[0].frame.w )
+       }
+
+    },
      createSymbolsMap(){
-       console.warn("createSymbolsMap",this.symbolParams, this.textures)
        if((this.symbolParams.length>0) && (this.textures.length > 0)){
         
         let symbolsMap = new Map();
