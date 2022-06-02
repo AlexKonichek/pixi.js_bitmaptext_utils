@@ -25,6 +25,7 @@ const store = new Vuex.Store({
     showInitBorders:false,
     showBorders:false,
     showFrameNamesOrderMessage:false,
+    showErrorInputPreview: false,
     textures:[],
     currentXadvance:null,
     currentSmallXadvance:null,
@@ -153,6 +154,7 @@ const store = new Vuex.Store({
     setShowBorders:(state, value) => state.showBorders = value,
     setShowInitBorders:(state, value) => state.showInitBorders = value,
     setDownloadXMl:(state, value) => state.downloadXMl = value,
+    setShowErrorInputPreview:(state, value) => state.showErrorInputPreview = value
 
   },
   actions: {

@@ -24,6 +24,9 @@ export default {
     '$store.state.currentXadvance': function () {
       this.render()
     },
+    '$store.state.showErrorInputPreview': function () {
+      if(this.$store.state.showErrorInputPreview === false) this.render()
+    },
     '$store.state.currentSmallXadvance': function () {
       this.render()
     },
@@ -40,7 +43,7 @@ export default {
       this.render()
     },
     '$store.state.arrSymbolsForPreview': function () {
-          this.render(this.$store.getters.isDigits)
+          this.render()
         },
 
   },
@@ -77,15 +80,19 @@ export default {
     },
 
     render() {
+      this.$store.commit("setShowErrorInputPreview", false)
       this.clearStage();
       this.addCanvasBorder();
-      console.warn( this.arrForPreview)
       let currentX = 0;
       let initialX = 0;
       let previousSymbolParams = null;
       this.$store.state.arrSymbolsForPreview.forEach((symbol, i, arr) => {
 
            let currentSymbolParams = this.$store.getters.getSymbolById(symbol)
+        if(!currentSymbolParams) {
+          this.$store.commit("setShowErrorInputPreview", true)
+          return
+        }
           let xoffset = (currentSymbolParams.width - currentSymbolParams.xadvance) / 2
           //currentX = currentX - xoffset
 

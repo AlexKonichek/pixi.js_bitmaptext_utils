@@ -1,7 +1,7 @@
 <template>
   <div class="slidePanel m-2">
-    <div v-if="showRequiredSymbolsInput">
-      <div id="RequiredSymbols">
+    <div>
+      <div id="RequiredSymbols"  v-if="showRequiredSymbolsInput">
         <label class="text-white mt-2" for="symbols">Required symbols</label>
         <div class="input-group input-group-lg mb-2">
           <input
@@ -101,7 +101,7 @@
             placeholder="tap symbols for preview"
         >
       </div>
-      <div v-if="showWarning" class="alert alert-danger" role="alert">
+      <div v-if="this.$store.state.showErrorInputPreview" class="alert alert-danger" role="alert">
           <p><b>You can input only those symbols which are in required symbols form!</b></p>
 
         </div>
@@ -152,7 +152,6 @@ export default {
       this.symbolsArr = []
       let symbolsArr = this.inputSymbols.split("");
       this.$store.commit("setSymbolsArr", symbolsArr)
-      console.warn("inputSymbols is changed", this.symbolsArr)
       this.initialParse()
       this.validateSymbolsForm()
     },
@@ -339,7 +338,7 @@ export default {
 <style>
 .slidePanel {
   overflow: hidden;
-  height: 65vh;
+  height: 75vh;
 }
 .xadvanceBorders {
   text-align: left;
