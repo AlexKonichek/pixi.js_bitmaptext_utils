@@ -225,7 +225,7 @@ export default {
 <style>
 
 .XML {
-  overflow: hidden;
+
   //height: 60vh;
 }
 </style>

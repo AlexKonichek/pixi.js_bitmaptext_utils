@@ -1,7 +1,7 @@
 <template>
   <div class="slidePanel m-2">
     <div>
-      <div id="RequiredSymbols"  v-if="showRequiredSymbolsInput">
+      <div id="RequiredSymbols">
         <label class="text-white mt-2" for="symbols">Required symbols</label>
         <div class="input-group input-group-lg mb-2">
           <input
@@ -20,7 +20,7 @@
           <p>Should be {{ this.$store.getters.framesArrLength }}</p>
         </div>
       </div>
-      <div id="ChooseSymbolsSet">
+      <div id="ChooseSymbolsSet" v-if="showRequiredSymbolsInput">
         <div>
           <label class="label text-white" for="Select">Choose symbols set</label>
           <select class="form-control form-control-lg mb-2" id="Select" v-model="inputSymbols"

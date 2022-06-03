@@ -13,7 +13,7 @@
           ></OpenFile>
           <div v-if="this.$store.state.showFrameNamesOrderMessage">
             <h1 class="text-warning" v-if="showTrimmedWarning"><b>Current version working only with NOT trimmed symbols sprites! Choose another one sprite for correct result!</b></h1>
-            <h2><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
+            <h2 class="text-light"><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
             <ul>
               <li v-for="(symbol) in symbols" :key="symbol">
                 <b>{{symbol}}</b>
@@ -185,10 +185,14 @@ export default {
          let data = JSON.parse(this.$store.state.loadedJSON)
          this.$store.commit("setJSONData", data)
          let frames = Object.values(data)[0]
-         if(!this.checkTrimmedSprite(Object.values(frames))) {
-           this.showTrimmedWarning = true
+       console.warn(this.$store.state.inputSymbolsArr)
+         if(this.$store.getters.hasDotSymbol) {
+           if(!this.checkTrimmedSprite(Object.values(frames))) {
+             this.showTrimmedWarning = true
 
+           }
          }
+
          this.symbols = Object.keys(frames).map(key => {return key.split(".")[0];})
         
      },
