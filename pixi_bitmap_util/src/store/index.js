@@ -17,7 +17,7 @@ const store = new Vuex.Store({
     framesArr:[],
     fontSize: 80,
     inputSymbolsArr:[],
-    isTrimmed: false,
+    isTrimmed: true,
     isDataReadyForXMLCreator:false,
     showCreateXMLButton:false,
     showInputError:false,
@@ -44,10 +44,14 @@ const store = new Vuex.Store({
 
     symbolForCorrectingXOffsetSmall:",",
     XMLText:"",
-    downloadXMl: false
+    downloadXMl: false,
+
 
   },
   getters: {
+    arrSymbolsWidthsAreIdentical:(state) => {
+      return state.arrSymbolsWidths.every(elWidth => elWidth === state.arrSymbolsWidths[0] )
+    },
     isBordersShowing: (state) => {
       return state.showBorders;
     },
@@ -111,7 +115,7 @@ const store = new Vuex.Store({
     },
     isDigits:state => {
       return state.inputSymbolsArr.includes(",")
-    }
+    },
 
     // secondSymbolXoffsetForCanvas:state => {
     //   return state.arrSymbolsParams.find(item => item.symbol === state.symbolForCorrectingXOffset)
@@ -134,7 +138,7 @@ const store = new Vuex.Store({
     setArrSymbolsHeights: (state, arrSymbolsHeights) => state.arrSymbolsHeights = arrSymbolsHeights,
     setArrSmallSymbolsWidth: (state, arrSmallSymbolsWidth) => state.arrSmallSymbolsWidth = arrSmallSymbolsWidth,
     setArrSmallSymbolsHeights: (state, arrSmallSymbolsHeights) => state.arrSmallSymbolsHeights = arrSmallSymbolsHeights,
-    isTrimmed: (state, trimmed) => state.isTrimmed = trimmed,
+    setTrimmedMode: (state, trimmed) => state.isTrimmed = trimmed,
     setDataReadyForXMLCreator: (state, isDataReady)  => state.isDataReadyForXMLCreator = isDataReady,
     setShowCreateXMLButton: (state, show) => state.showCreateXMLButton = show,
     updateCurrentXadvance: (state, value) => state.currentXadvance = value,

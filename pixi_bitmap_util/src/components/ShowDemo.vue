@@ -50,7 +50,8 @@ export default {
   mounted() {
     this.app = new PIXI.Application({
       width: this.$store.getters.canvasWidths,
-      height: this.$store.getters.canvasHeight,
+      //height: this.$store.getters.canvasHeight,
+      height:300,
       transparent: true,
       antialias: true,
       backgroundColor: 0xffffff
@@ -122,10 +123,14 @@ export default {
         texture = this.app.renderer.generateTexture(graphic);
       }
 
+
         let symbolSprite = PIXI.Sprite.from(texture);
+        let symbolScale = symbolSprite.height > 100 ? (100 / symbolSprite.height) : 1
         symbolSprite.x = x
         symbolSprite.y = y
-        //add initial border
+      //  symbolSprite.scale.x = symbolScale
+      //  symbolSprite.scale.y = symbolScale
+        //add initial border (width)
         let spriteSheetBorderInitial = new PIXI.Graphics();
         spriteSheetBorderInitial.lineStyle(2, 0x000000, 1);
         spriteSheetBorderInitial.drawRect(x, 0, currentSymbol.width, currentSymbol.height);
@@ -133,7 +138,7 @@ export default {
 
 
 
-      //add current border
+      //add xadvance border
       let spriteSheetBorder = new PIXI.Graphics();
       spriteSheetBorder.lineStyle(4, 0xFF0000, 1);
       spriteSheetBorder.drawRect(x + xoffset, 0, currentSymbol.xadvance, currentSymbol.height);
@@ -151,7 +156,7 @@ export default {
     addCanvasBorder() {
       this.spritesheetWrapper = new PIXI.Container()
       this.spriteSheetBorder = new PIXI.Graphics();
-      this.spriteSheetBorder.lineStyle(2, 0x000000, 1);
+      this.spriteSheetBorder.lineStyle(2, 0xffffff, 1);
       this.spriteSheetBorder.drawRect(0, 0, this.$store.getters.canvasWidths, this.$store.getters.canvasHeight);
       this.spriteSheetBorder.endFill();
       this.spriteSheetBorder.x = 0;

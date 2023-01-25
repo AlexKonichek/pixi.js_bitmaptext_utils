@@ -1,39 +1,37 @@
 <template>
   <div class="h-100">
-    <div class="h-100 d-flex flex-column">
-      <div class="row flex-grow-1 bg-secondary">
-        <div class="col-lg-3 mr-3 bg-secondary">
+    <div class="h-100 d-flex flex-column bg-secondary">
+      <div class="row flex-grow-1  top-row">
+        <div class="col-lg-4 mr-3 side-panel">
           <SidePanel v-show="showSidePanel"/>
         </div>
-        <div class="col-lg-6 ml-3">
+        <div class="col-lg-8 ml-3 textarea">
           <OpenFile v-if="showOpenFile"
                     @json="loadedJSON = $event"
                     @image="loadedPNG = $event"
                     @getImgUrl="imgUrl = $event"
           ></OpenFile>
           <div v-if="this.$store.state.showFrameNamesOrderMessage">
-            <h1 class="text-warning" v-if="showTrimmedWarning"><b>Current version working only with NOT trimmed symbols sprites! Choose another one sprite for correct result!</b></h1>
-            <h2 class="text-light"><b>Please, put symbols in right order or select it from selector under symbols form</b></h2>
+<!--            <h3 class="text-warning"><b>Current version working correctly only with NOT trimmed symbols sprites!</b></h3>-->
+            <h3 class="text-light"><b>Please, put symbols in right order in case it's numbers or alphabetical order, or select it from left side selector under symbols form</b></h3>
             <ul>
               <li v-for="(symbol) in symbols" :key="symbol">
-                <b>{{symbol}}</b>
+                {{symbol}}
               </li>
             </ul>
           </div>
-          <div class="row">
-            <div class="h-75">
+          <div>
               <XML_Creator v-if="showXMLCreator"/>
-            </div>
           </div>
 
         </div>
-        <div class="col-lg-3 ml-3">
-          <button class="btn btn-success m-3" v-if="this.$store.state.isDataReadyForXMLCreator"  v-on:click="this.downloadXML">Download XML</button>
-        </div>
       </div>
       <div class="row flex-grow-1">
-        <div class="bg-secondary">
+        <div class="col-lg-8 mr-3 side-panel">
           <ShowDemo v-if="this.$store.state.showCanvas"/>
+        </div>
+        <div class="col-lg-4 ml-3">
+          <button class="btn btn-success m-3" v-if="this.$store.state.isDataReadyForXMLCreator"  v-on:click="this.downloadXML">Download XML</button>
         </div>
       </div>
     </div>
@@ -47,6 +45,7 @@ import ShowDemo from "./ShowDemo.vue";
 import XML_Creator from "./XML-Creator";
 import SidePanel from "./SidePanel"
 import FinalPreview from "./FinalPreview.vue"
+import BorderCheckbox from "@/components/BorderCheckbox";
 
 export default {
   components: {OpenFile, XML_Creator, SidePanel, ShowDemo},
@@ -127,7 +126,6 @@ export default {
     }
   },
   watch: {
-    
     textures: function () {
       this.createSymbolsMap()
     },
@@ -136,7 +134,6 @@ export default {
     },
     '$store.state.loadedJSON': function () {
       this.showOpenFile = false
-      this.checkTrimmedSprite()
       this.createShowFrameNameOrderList()
       this.showImagePreview = true
       this.showSidePanel = true
@@ -185,21 +182,14 @@ export default {
          let data = JSON.parse(this.$store.state.loadedJSON)
          this.$store.commit("setJSONData", data)
          let frames = Object.values(data)[0]
-       console.warn(this.$store.state.inputSymbolsArr)
-         if(this.$store.getters.hasDotSymbol) {
-           if(!this.checkTrimmedSprite(Object.values(frames))) {
-             this.showTrimmedWarning = true
 
-           }
-         }
-
+         this.setTrimmedFlag(Object.values(frames))
          this.symbols = Object.keys(frames).map(key => {return key.split(".")[0];})
         
      },
-    checkTrimmedSprite(framesArr) {
+    setTrimmedFlag(framesArr) {
        if(framesArr) {
-         //check if all elements widhts is equal
-         return framesArr.every( item => item.frame.w === framesArr[0].frame.w )
+         this.$store.commit("setTrimmedMode", framesArr[0].trimmed)
        }
 
     },
@@ -261,14 +251,12 @@ export default {
 }
 </script>
 <style>
-.height75 {
-  height: 75vh;
-}
-.height25 {
-  height: 25vh;
-}
 
 ul {
     list-style: none;
   }
+
+.top-row {
+  //height: 75vh;
+}
 </style>
